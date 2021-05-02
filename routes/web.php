@@ -13,6 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Home画面
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
+});
+
+Route::get('/hello',function(){
+    return '<html><body><h1>hello world</h1></body></html>';
+});
+
+// プロフィール画面
+Route::get('/{id}', function ($id){
+    return $id;
 });
