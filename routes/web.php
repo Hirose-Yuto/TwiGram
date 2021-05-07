@@ -23,6 +23,8 @@ Route::get('/hello',function(){
 });
 
 // プロフィール画面
-Route::get('/{id}', function ($id){
-    return $id;
-});
+Route::get('/{id}', "App\Http\Controllers\ProfileController@main");
+// function ($id){
+//    $data["id"] = $id;
+//    return view("profile", $data);
+//}
