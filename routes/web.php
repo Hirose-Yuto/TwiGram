@@ -14,17 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Home画面
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', "App\Http\Controllers\HomeController@timeline");
+
+// Twig処理
+Route::post("/", "App\Http\Controllers\HomeController@twig");
 
 Route::get('/hello',function(){
     return '<html><body><h1>hello world</h1></body></html>';
-});
+})->middleware("test");
+
+
 
 // プロフィール画面
 Route::get('/{id}', "App\Http\Controllers\ProfileController@main");
-// function ($id){
-//    $data["id"] = $id;
-//    return view("profile", $data);
-//}
+
