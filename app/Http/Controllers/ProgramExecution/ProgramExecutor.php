@@ -39,7 +39,37 @@ class ProgramExecutor
     }
 
     private static function Cpp($text) {
-        $fileName = "Main.cpp";
-        return $text." feat. C++";
+        $folder = "tmp_programs/Cpp/";
+        $fileName = $folder."Main.cpp";
+        $text = "#include<iostream>\n".
+                "using namespace std;\n\n".
+                "int main(){\n".
+                    $text.
+                "\n}";
+
+        if (file_put_contents($fileName, $text, LOCK_EX)) {
+            $output = [];
+            $return_var = 1;
+
+            //exec("echo %GCC_HOME%", $output, $return_var);
+
+            //exec("g++ --version", $output, $return_var); //g++ (Homebrew GCC 10.2.0_4) 10.2.0Copyright (C) 2020 Free Software Foundation, Inc.This is free software; see the source for copying conditions. There is NOwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+            //exec("gcc --version", $output, $return_var); // Apple clang version 11.0.3 (clang-1103.0.32.29)Target: x86_64-apple-darwin19.6.0Thread model: posixInstalledDir: /Library/Developer/CommandLineTools/usr/bin
+
+            exec("clang++ " . $fileName . " -o ".$folder."Main.out 2>&1", $output, $return_var);
+            if ($return_var) {
+                return 'Output: ' . PHP_EOL . implode(PHP_EOL, $output);
+            }else {
+                exec($folder."Main.out 2>&1", $output, $return_var);
+                if($return_var) {
+                    return 'Output: ' . PHP_EOL . implode(PHP_EOL, $output);
+                } else {
+                    return implode($output);
+                }
+            }
+        } else {
+            return "書き込めない";
+        }
+
     }
 }
