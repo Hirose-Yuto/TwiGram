@@ -24,7 +24,7 @@ class ProgramExecutor
             // ToDo:例外を投げる
 
             // 仮に
-            $twigs = ["twig" => "error!"];
+            $twigs = ["twig" => ["error!"]];
             return view("home", $twigs);
         }
 
@@ -42,7 +42,7 @@ class ProgramExecutor
         $folder = "tmp_programs/Cpp/";
         $fileName = $folder."Main.cpp";
         $text = "#include<iostream>\n".
-                "#include<vector>".
+                "#include<vector>\n".
                 "using namespace std;\n\n".
                 "int main(){\n".
                     $text.
@@ -70,7 +70,13 @@ class ProgramExecutor
                     // runtime error
                     return 'Output: ' . PHP_EOL . implode(PHP_EOL, $output);
                 } else {
-                    return implode($output);
+                    if($output === null) {
+                        // 出力なし
+                        // 例外
+                        return "null";
+                    } else {
+                        return implode("\n", $output);
+                    }
                 }
             }
         } else {

@@ -23,7 +23,7 @@
         <button type="submit" class="submitTwig">Twig</button>
     </form>
 
-    <p>{{$twig??""}}</p>
+    <p>{!! nl2br(e($twig??"")) !!}</p>
 
 </body>
 </html>
