@@ -17,7 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', "App\Http\Controllers\HomeController@timeline");
 
 // Twig処理
-Route::post("/", "App\Http\Controllers\HomeController@twig");
+Route::post('/', "App\Http\Controllers\HomeController@twig");
+
+// Settings
+Route::get('/settings', "App\Http\Controllers\SettingsController@settings");
 
 Route::get('/hello',function(){
     return '<html><body><h1>hello world</h1></body></html>';
