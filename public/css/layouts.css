@@ -1,0 +1,15 @@
+#menu {
+    top:0;
+    height: 100vw;
+    border-width: thin;
+    border-color: #203864;
+    border-right-style: solid;
+}
+
+#r_sidebar {
+    top:0;
+    height: 100vw;
+    border-width: thin;
+    border-color: #203864;
+    border-left-style: solid;
+}
