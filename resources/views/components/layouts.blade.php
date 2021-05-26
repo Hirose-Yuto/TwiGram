@@ -20,9 +20,16 @@
                 <x-menu/>
             </div>
         </div>
-        <div class="col-7">
-            {{$body}}
-        </div>
+        <div class="col-7" style="padding: 0">
+            <div id="header">
+                <!--Header-->
+                {{$title}}
+            </div>
+            <div id="body">
+                {{$body}}
+           </div>
+            </div>
+
         <div class="col-3" id="r_sidebar">
             <div style="position: fixed">
                 {{$rsidebar??"Right Sidebar"}}

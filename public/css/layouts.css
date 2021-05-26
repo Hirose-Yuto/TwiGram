@@ -13,3 +13,16 @@
     border-color: #203864;
     border-left-style: solid;
 }
+
+#header {
+    height: auto;
+    width: 58.3333333334%;
+    position: fixed;
+    background: #203864;
+    color: #ffffff;
+    text-align: center;
+}
+
+#body {
+    margin-top: 22px;
+}
