@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Home画面
-Route::get('/', "App\Http\Controllers\HomeController@timeline");
+Route::get('/', "App\Http\Controllers\Home_Controller@timeline");
 
 // Twig処理
-Route::post('/', "App\Http\Controllers\HomeController@twig");
+Route::post('/', "App\Http\Controllers\Home_Controller@twig");
 
 // Settings
 Route::get('/settings', "App\Http\Controllers\SettingsController@settings");
@@ -29,5 +29,10 @@ Route::get('/hello',function(){
 
 
 // プロフィール画面
-Route::get('/{id}', "App\Http\Controllers\ProfileController@main");
+Route::get('/{screen_name}', "App\Http\Controllers\ProfileController@main");
+Route::get('/{screen_name}/{mode}', "App\Http\Controllers\ProfileController@main");
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

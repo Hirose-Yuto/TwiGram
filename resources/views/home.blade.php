@@ -3,8 +3,9 @@
     <x-slot name="header">
         <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     </x-slot>
+    <x-slot name="menu">Home</x-slot>
     <x-slot name="body">
-        <div id="input">
+        <div id="twig_input">
             <form action="/" method="post">
                 @csrf
                 <label for=twig">
@@ -21,6 +22,6 @@
             </form>
         </div>
 
-        <p>{!! nl2br(e($twig??"")) !!}</p>
+        <h1>{!! nl2br(e($twig??"")) !!}</h1>
     </x-slot>
 </x-layouts>

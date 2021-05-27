@@ -70,10 +70,10 @@ class ProgramExecutor
                     // runtime error
                     return 'Output: ' . PHP_EOL . implode(PHP_EOL, $output);
                 } else {
-                    if($output === null) {
+                    if($output === []) {
                         // 出力なし
                         // 例外
-                        return "null";
+                        return "出力がありません";
                     } else {
                         return implode("\n", $output);
                     }

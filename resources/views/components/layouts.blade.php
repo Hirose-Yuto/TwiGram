@@ -17,7 +17,9 @@
     <div class="row">
         <div class="col-2" id="menu">
             <div style="position: fixed">
-                <x-menu/>
+                <x-menu>
+                    <x-slot name="menu">{{$menu}}</x-slot>
+                </x-menu>
             </div>
         </div>
         <div class="col-7" style="padding: 0">
