@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Twig extends Model
+class UsersTwigsOwnership extends Model
 {
     use HasFactory;
-    protected $primaryKey = "twig_id";
+    protected $primaryKey = ["user_id", "twig_id"];
+    public $incrementing = false;
 }

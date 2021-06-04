@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Twig extends Model
+class ProgramLanguage extends Model
 {
     use HasFactory;
-    protected $primaryKey = "twig_id";
+    protected $primaryKey = "program_language_id";
+    public $timestamps = false;
 }

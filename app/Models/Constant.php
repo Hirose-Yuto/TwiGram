@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Twig extends Model
+class Constant extends Model
 {
     use HasFactory;
-    protected $primaryKey = "twig_id";
+    protected $primaryKey = "constant_id";
 }
