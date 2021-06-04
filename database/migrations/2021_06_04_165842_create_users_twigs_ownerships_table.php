@@ -14,8 +14,14 @@ class CreateUsersTwigsOwnershipsTable extends Migration
     public function up()
     {
         Schema::create('users_twigs_ownerships', function (Blueprint $table) {
-            $table->id();
+            $table->id("user_id")->primary();
+            $table->id("twig_id")->primary();
+            $table->boolean("is_retwig");
+            $table->string("retwig_comment", 840);
             $table->timestamps();
+
+            $table->foreignId("user_id")->constrained("users", "user_id");
+            $table->foreignId("twig_id")->constrained("twigs", "twig_id");
         });
     }
 

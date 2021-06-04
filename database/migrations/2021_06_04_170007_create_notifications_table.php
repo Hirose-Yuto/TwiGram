@@ -14,8 +14,13 @@ class CreateNotificationsTable extends Migration
     public function up()
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
+            $table->id("notification_id")->unique()->primary();
+            $table->id("notification_to");
+            $table->boolean("is_read");
+            $table->id("notification_type_id");
             $table->timestamps();
+
+            $table->foreignId("notification_type_id")->constrained("notification_types", "notification_type_id");
         });
     }
 

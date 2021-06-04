@@ -16,8 +16,8 @@ class CreateTwigsTable extends Migration
         Schema::create('twigs', function (Blueprint $table) {
             $table->id("twig_id")->unique()->primary();
             $table->timestamps();
-            $table->string("program", 1024);
-            $table->string("program_result", 512);
+            $table->string("program", 3000);
+            $table->string("program_result", 840);
             $table->id("program_language_id");
             $table->integer("num_of_likes");
             $table->integer("num_of_retwigs");

@@ -14,8 +14,13 @@ class CreateUsersLikesTable extends Migration
     public function up()
     {
         Schema::create('users_likes', function (Blueprint $table) {
-            $table->id();
+            $table->id("like_id")->unique()->primary();
+            $table->id("user_id");
+            $table->id("twig_id");
             $table->timestamps();
+
+            $table->foreignId("user_id")->constrained("users", "user_id");
+            $table->foreignId("twig_id")->constrained("twigs", "twig_id");
         });
     }
 
