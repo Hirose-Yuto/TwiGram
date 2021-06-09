@@ -14,15 +14,12 @@ class CreateDirectMessagesTable extends Migration
     public function up()
     {
         Schema::create('direct_messages', function (Blueprint $table) {
-            $table->id("direct_message_id")->unique()->primary();
-            $table->id("sent_from");
-            $table->id("sent_to");
+            $table->id("direct_message_id");
+            $table->foreignId("sent_from")->constrained("users", "user_id");
+            $table->foreignId("sent_to")->constrained("users", "user_id");
             $table->string("message", 840);
             $table->timestamp("read_at")->nullable();
             $table->timestamps();
-
-            $table->foreignId("sent_from")->constrained("users", "user_id");
-            $table->foreignId("sent_to")->constrained("users", "user_id");
         });
     }
 

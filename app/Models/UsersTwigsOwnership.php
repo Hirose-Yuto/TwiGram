@@ -8,6 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class UsersTwigsOwnership extends Model
 {
     use HasFactory;
-    protected $primaryKey = ["user_id", "twig_id"];
-    public $incrementing = false;
+    protected $primaryKey = "ownership_id";
 }

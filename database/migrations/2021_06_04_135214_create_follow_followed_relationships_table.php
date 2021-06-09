@@ -14,12 +14,9 @@ class CreateFollowFollowedRelationshipsTable extends Migration
     public function up()
     {
         Schema::create('follow_followed_relationships', function (Blueprint $table) {
-            $table->id("following_user_id")->primary();
-            $table->id("followed_user_id")->primary();
-            $table->timestamps();
-
             $table->foreignId("following_user_id")->constrained("users", "user_id");
             $table->foreignId("followed_user_id")->constrained("users", "user_id");
+            $table->timestamps();
         });
     }
 

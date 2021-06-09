@@ -14,12 +14,10 @@ class CreateConstantsTable extends Migration
     public function up()
     {
         Schema::create('constants', function (Blueprint $table) {
-            $table->id("constant_id")->unique()->primary();
-            $table->id("owner");
+            $table->id("constant_id");
+            $table->foreignId("owner")->constrained("users", "user_id");
             $table->string("content", 840);
             $table->timestamps();
-
-            $table->foreignId("owner")->constrained("users", "user_id");
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersLikesTable extends Migration
+class CreateUsersTwigsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateUsersLikesTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_likes', function (Blueprint $table) {
-            $table->id("like_id")->unique()->primary();
-            $table->id("user_id");
-            $table->id("twig_id");
-            $table->timestamps();
-
+        Schema::create('users_twigs', function (Blueprint $table) {
+            $table->id("ownership_id");
             $table->foreignId("user_id")->constrained("users", "user_id");
             $table->foreignId("twig_id")->constrained("twigs", "twig_id");
+            $table->boolean("is_retwig");
+            $table->string("retwig_comment", 840);
+            $table->timestamps();
         });
     }
 
@@ -31,6 +30,6 @@ class CreateUsersLikesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_likes');
+        Schema::dropIfExists('users_twigs');
     }
 }

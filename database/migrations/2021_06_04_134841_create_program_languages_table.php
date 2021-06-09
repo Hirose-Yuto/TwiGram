@@ -14,7 +14,7 @@ class CreateProgramLanguagesTable extends Migration
     public function up()
     {
         Schema::create('program_languages', function (Blueprint $table) {
-            $table->id("program_language_id")->unique();
+            $table->id("program_language_id");
             $table->string("language_name", 300);
         });
     }
