@@ -9,4 +9,8 @@ class UsersTwigsOwnership extends Model
 {
     use HasFactory;
     protected $primaryKey = "ownership_id";
+
+    protected $fillable = [
+        "retwig_comment"
+    ];
 }

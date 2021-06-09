@@ -9,4 +9,8 @@ class DirectMessage extends Model
 {
     use HasFactory;
     protected $primaryKey = "direct_message_id";
+    protected $fillable = [
+        "message",
+        "read_at"
+    ];
 }

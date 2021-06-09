@@ -9,4 +9,5 @@ class UsersLikes extends Model
 {
     use HasFactory;
     protected $primaryKey = "like_id";
+
 }

@@ -9,4 +9,9 @@ class Twig extends Model
 {
     use HasFactory;
     protected $primaryKey = "twig_id";
+
+    protected $guarded = [
+        "twig_id",
+        "twig_from",
+    ];
 }

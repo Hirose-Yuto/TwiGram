@@ -9,4 +9,8 @@ class Constant extends Model
 {
     use HasFactory;
     protected $primaryKey = "constant_id";
+
+    protected $fillable = [
+        "content"
+    ];
 }
