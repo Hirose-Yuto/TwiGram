@@ -1,11 +1,14 @@
 <div>
     <ul class="nav flex-column">
-<?php
-    $menuList = [
-        "Home" => "",
-        "Profile" => "masu1017",
-        "Settings" => "settings"];
-?>
+        <?php
+        use Illuminate\Support\Facades\Auth;
+        $user = Auth::user();
+            $menuList = [
+                "Home" => "",
+                "Profile" => Auth::check()?\App\Models\User::find(Auth::id())->value("screen_name"):"amida",
+                "Settings" => "settings"];
+        ?>
+
         @foreach($menuList as $m => $l)
             @if($menu == $m)
                 <li class="nav-item">

@@ -33,7 +33,7 @@
         </div>
 
         <div class="col-3" id="r_sidebar">
-            <div style="position: fixed">
+            <div style="position: fixed; padding-top: 10px">
                 @guest
                     <nav class="nav">
                         @if (Route::has('login'))
@@ -41,7 +41,7 @@
                         @endif
                         @if (Route::has('register'))
                             <a class="nav-link btn btn-outline-dark" href="{{ route('register') }}">{{ __('Register') }}</a>
-                    @endif
+                        @endif
                     </nav>
                 @else
                     <li class="nav-item dropdown" style="list-style: none">

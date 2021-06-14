@@ -12,14 +12,49 @@
 }
 
 #name_id {
-    padding: 10px 20px 10px;
+    padding: 10px 10px 10px;
 }
 
 #bio {
     height: auto;
-    padding: 10px 20px 10px;
+    padding: 10px 10px 10px;
 }
 
 #following_followers {
-    padding: 10px 20px 10px;
+    padding: 10px 10px 10px;
 }
+
+#following_state {
+    margin: 10px 0 0 0 ;
+}
+
+#followed_state {
+    margin: 1px 0 0 0;
+    text-align: center;
+    color: #c8cbcf;
+    background: #828686;
+}
+
+#profile_back_button {
+
+}
+
+#ff_button {
+    width: max-content;
+    text-align: center;
+    height: max-content;
+    display: table;
+}
+
+#ff_msg {
+    display: table-cell;
+    vertical-align:middle;
+}
+
+.user_ff_mode{
+
+}
+
+
+
+
