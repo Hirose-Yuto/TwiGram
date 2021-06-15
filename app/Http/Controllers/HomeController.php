@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ProgramExecutionException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProgramExecution\ProgramExecutor;
 
@@ -33,8 +34,22 @@ class HomeController extends Controller
         $text = $request->get("twig");
         $lang = $request->get("lang");
 
-        return ProgramExecutor::executeProgram($text, $lang);
+        try {
+            $program_result = ProgramExecutor::executeProgram($text, $lang);
+        }catch(ProgramExecutionException $e) {
+            $e->report();
+            $data = [
+                "exeptionMessage" => $e->exceptionMessage,
+                "customMessage" => $e->customMessage,
+            ];
+            return view("home", $data);
+        }
 
+        $data = [
+            "twig" => $program_result,
+            "twig_draft" => "",
+        ];
+        return view("home", $data);
 
         // return view("home", ["twig" => $text]);
         //return "<h1>".$text."</h1>";

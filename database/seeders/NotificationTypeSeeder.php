@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class NotificationTypeSeeder extends Seeder
 {
@@ -13,6 +14,20 @@ class NotificationTypeSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table("notification_types")->insert([
+            NotificationTypeSeeder::data(0, "like"),
+            NotificationTypeSeeder::data(1, "mention"),
+            NotificationTypeSeeder::data(2, "retwig_with_comment"),
+            NotificationTypeSeeder::data(3, "reply"),
+            NotificationTypeSeeder::data(4, "follow"),
+        ]);
+    }
+
+    private function data($id, $notification_type): array
+    {
+        return [
+            "notification_type_id" => $id,
+            "notification_type" => $notification_type
+        ];
     }
 }

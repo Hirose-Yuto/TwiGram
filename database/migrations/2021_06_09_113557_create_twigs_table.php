@@ -19,6 +19,7 @@ class CreateTwigsTable extends Migration
             $table->string("program", 3000);
             $table->string("program_result", 840);
             $table->foreignId("program_language_id")->constrained("program_languages", "program_language_id");
+            $table->integer("execution_time");
             $table->integer("num_of_likes");
             $table->integer("num_of_retwigs");
             $table->integer("num_of_retwigs_with_comment");

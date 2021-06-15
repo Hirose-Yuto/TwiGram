@@ -10,4 +10,5 @@ class ProgramLanguage extends Model
     use HasFactory;
     protected $primaryKey = "program_language_id";
     public $timestamps = false;
+    public $incrementing = false;
 }

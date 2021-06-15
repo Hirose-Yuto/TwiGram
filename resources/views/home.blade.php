@@ -9,7 +9,7 @@
             <form action="/" method="post">
                 @csrf
                 <label for=twig">
-                    <textarea name="twig" id="twig" class="twig" placeholder="twig" cols="42" rows="3"></textarea>
+                    <textarea name="twig" id="twig" class="twig" placeholder="twig" cols="42" rows="3">{{$twig_draft??""}}</textarea>
                 </label><br>
                 <label for="lang">
                     <select name="lang" class="form-select" aria-label="Default select example">

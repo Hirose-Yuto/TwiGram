@@ -17,15 +17,14 @@ class ProgramExecutor
 
             // ToDo:データベース追加
 
-            // 仮に
-            $twigs = ["twig" => $twig];
-            return view("home", $twigs);
+            //
+            return $twig;
         } else {
             // ToDo:例外を投げる
 
-            // 仮に
+            // 言語が存在しない
             $twigs = ["twig" => ["error!"]];
-            return view("home", $twigs);
+            return "error!";
         }
 
     }

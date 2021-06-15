@@ -10,5 +10,6 @@ class NotificationType extends Model
     use HasFactory;
     protected $primaryKey = "notification_type_id";
     public $timestamps = false;
+    public $incrementing = false;
 
 }

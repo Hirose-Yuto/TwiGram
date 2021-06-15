@@ -15,30 +15,12 @@ class ProfileController extends Controller
             $user = User::query()->where("screen_name", "=", $screen_name);
             $data["user"] = $user;
 
-            // , with_replies, media, likes, following, followers
+            // (profile), with_replies, media, likes, following, followers
             $data["mode"] = $mode;
             if ($mode) {
                 $data["profile_body"] = $mode . "が入ります";
             } else {
                 $data["profile_body"] = "Twigが入ります";
-            }
-
-            if($mode == "following") {
-                $followed_users_id = FollowFollowedRelationship::query()
-                    ->where("following_user_id", "=", $user->value("user_id"))->get("followed_user_id");
-                $followed_users = [];
-                foreach ($followed_users_id as $followed_user_id) {
-                    $followed_users[] = User::query()->find($followed_user_id->followed_user_id);
-                }
-                $data["followed_users"] = $followed_users;
-            } else if ($mode == "followers") {
-                $following_users_id = FollowFollowedRelationship::query()
-                    ->where("followed_user_id", "=", $user->value("user_id"))->get("following_user_id");
-                $following_users = [];
-                foreach ($following_users_id as $following_user_id) {
-                    $following_users[] = User::query()->find($following_user_id->following_user_id);
-                }
-                $data["following_users"] = $following_users;
             }
 
 
@@ -67,7 +49,7 @@ class ProfileController extends Controller
                     ->where("following_user_id", "=", $user->value("user_id"))
                     ->where("followed_user_id", "=", Auth::id())
                     ->exists()) {
-                    // フォローしてる
+                    // フォローされてる
                     $data["followedState"] = "following";
                 } else {
                     $data["followedState"] = "not_following";
@@ -75,6 +57,26 @@ class ProfileController extends Controller
             }else {
                 $data["followedState"] = "guest";
             }
+
+            // フォロー中ユーザ、フォロワー取得
+            if($mode == "following") {
+                $followed_users_id = FollowFollowedRelationship::query()
+                    ->where("following_user_id", "=", $user->value("user_id"))->get("followed_user_id");
+                $followed_users = [];
+                foreach ($followed_users_id as $followed_user_id) {
+                    $followed_users[] = User::query()->find($followed_user_id->followed_user_id);
+                }
+                $data["followed_users"] = $followed_users;
+            } else if ($mode == "followers") {
+                $following_users_id = FollowFollowedRelationship::query()
+                    ->where("followed_user_id", "=", $user->value("user_id"))->get("following_user_id");
+                $following_users = [];
+                foreach ($following_users_id as $following_user_id) {
+                    $following_users[] = User::query()->find($following_user_id->following_user_id);
+                }
+                $data["following_users"] = $following_users;
+            }
+
 
             //FFの数
             $data["following"] = FollowFollowedRelationship::query()
