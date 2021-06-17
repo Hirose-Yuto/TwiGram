@@ -5,17 +5,21 @@ namespace App\Http\Controllers\ProgramExecution;
 
 
 use App\Exceptions\ProgramExecutionException;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ProgramExecutor
 {
-    public static function executeProgram($text, $lang) {
+    public static function executeProgram($text, $lang, $ignoreWarning) {
         $methods = config("languages.languageMethods");
         $langList = config("languages.languageList");
+
+        User::query()->find(Auth::id())->update(["ignore_compiler_warning"=>$ignoreWarning]);
 
         if(array_key_exists($lang, $langList) &&
             array_key_exists($langList[$lang], $methods)) {
             $method = $methods[$langList[$lang]];
-            $twig = ProgramExecutor::$method($text);
+            $twig = ProgramExecutor::$method($text, $ignoreWarning);
 
             // ToDo:データベース追加
 
@@ -31,18 +35,18 @@ class ProgramExecutor
 
     }
 
-    private static function PlainText($text) {
+    private static function PlainText($text, $ignoreWarning) {
         return $text;
     }
 
-    private static function C($text) {
+    private static function C($text, $ignoreWarning) {
         return $text." feat. C";
     }
 
     /**
      * @throws ProgramExecutionException
      */
-    private static function Cpp($text) {
+    private static function Cpp($text, $ignoreWarning) {
         $folder = "tmp_programs/Cpp/";
         $fileName = $folder."Main.cpp";
         $text = "#include<iostream>\n".
@@ -63,8 +67,11 @@ class ProgramExecutor
             // compile
             exec("clang++ " . $fileName . " -o ".$folder."Main.out 2>&1", $output, $return_var);
 
-            // ToDo:オプションでWarningを省く
-            if ($return_var || $output) {
+            if(!$ignoreWarning && $output) {
+                throw new ProgramExecutionException(6, PHP_EOL . implode(PHP_EOL, $output));
+            }
+
+            if ($return_var) {
                 // compile error
                 throw new ProgramExecutionException(2, 'Output: ' . PHP_EOL . implode(PHP_EOL, $output));
             }else {

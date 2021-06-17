@@ -1,14 +1,14 @@
-.twig {
+#twig {
     resize: none;
-    margin: 5% 5% 2%;
 }
 
 #twig_input {
     height: auto;
+    padding: 10px;
     border-bottom: #203864;
     border-bottom-style: solid;
     border-bottom-width: thin;
 }
-.submitTwig {
+#submitTwig {
     margin: 0 10% 0;
 }

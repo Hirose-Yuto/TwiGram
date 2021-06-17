@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ProgramExecutionException;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProgramExecution\ProgramExecutor;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -30,12 +32,16 @@ class HomeController extends Controller
             "twig" => "required"
         ]);
 
-
         $text = $request->get("twig");
         $lang = $request->get("lang");
+        if($request->get("ignore_warning")) {
+            $ignoreWarning = true;
+        } else {
+            $ignoreWarning = false;
+        }
 
         try {
-            $program_result = ProgramExecutor::executeProgram($text, $lang);
+            $program_result = ProgramExecutor::executeProgram($text, $lang, $ignoreWarning);
         }catch(ProgramExecutionException $e) {
             $e->report();
             $data = [

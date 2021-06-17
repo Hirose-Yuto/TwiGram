@@ -15,7 +15,7 @@ class ProgramExecutionException extends Exception
         3 => "Runtime error happened.",
         4 => "Time limit exceeded.",
         5 => "Output is null.",
-        6 => "Warning"
+        6 => "Compiler warning."
         ];
 
     public $exceptionId;

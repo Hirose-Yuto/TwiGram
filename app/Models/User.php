@@ -23,7 +23,8 @@ class User extends Authenticatable
         'screen_name',
         'email',
         'password',
-        "bio"
+        "bio",
+        "ignore_compiler_warning",
     ];
 
     /**

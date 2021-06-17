@@ -71,6 +71,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'screen_name' => $data['screen_name'],
+            'ignore_compiler_warning' => false,
         ]);
     }
 }

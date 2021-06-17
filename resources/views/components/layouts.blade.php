@@ -32,7 +32,7 @@
                 {{$body}}
             </div>
 
-            @if($exceptionMessage != null && $exceptionMessage != "")
+            @if(isset($exceptionMessage) && $exceptionMessage != "")
                 <p id="exception" class="rounded">
                     error! <br>
                     {!! nl2br(e($exceptionMessage)) !!}<br>

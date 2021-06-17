@@ -18,7 +18,17 @@
                         @endforeach
                     </select>
                 </label>
-                <button type="submit" class="submitTwig">Twig</button>
+                <div class="form-check form-group">
+                    @if(\App\Models\User::query()->find(\Illuminate\Support\Facades\Auth::id())->value("ignore_compiler_warning"))
+                        <input class="form-check-input" type="checkbox" name="ignore_warning" id="ignore_warning_checkbox" checked>
+                    @else
+                        <input class="form-check-input" type="checkbox" name="ignore_warning" id="ignore_warning_checkbox">
+                    @endif
+                    <label class="form-check-label" for="ignore_warning">
+                        Ignore compiler warning
+                    </label>
+                </div>
+                <button type="submit" class="submitTwig" id="submitTwig">Twig</button>
             </form>
         </div>
 
