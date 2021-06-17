@@ -16,9 +16,9 @@ class LanguageTableSeeder extends Seeder
     public function run()
     {
         DB::table("program_languages")->insert([
-            LanguageTableSeeder::data(0, "Plain Text"),
-            LanguageTableSeeder::data(1, "C"),
-            LanguageTableSeeder::data(2, "C++"),
+            LanguageTableSeeder::data(1, "Plain Text"),
+            LanguageTableSeeder::data(2, "C"),
+            LanguageTableSeeder::data(3, "C++"),
         ]);
     }
 

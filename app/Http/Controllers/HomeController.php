@@ -33,7 +33,7 @@ class HomeController extends Controller
         ]);
 
         $text = $request->get("twig");
-        $lang = $request->get("lang");
+        $lang_index = $request->get("lang");
         if($request->get("ignore_warning")) {
             $ignoreWarning = true;
         } else {
@@ -41,7 +41,7 @@ class HomeController extends Controller
         }
 
         try {
-            $program_result = ProgramExecutor::executeProgram($text, $lang, $ignoreWarning);
+            $program_result = ProgramExecutor::executeProgram($text, $lang_index, $ignoreWarning);
         }catch(ProgramExecutionException $e) {
             $e->report();
             $data = [

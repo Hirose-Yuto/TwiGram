@@ -1,9 +1,9 @@
 <?php
 return [
     "languageList" => [
-        0 => "Plain Text",
-        1 => "C",
-        2 => "C++",
+        1 => "Plain Text",
+        2 => "C",
+        3 => "C++",
     ],
 
     "languageMethods" => [

@@ -11,10 +11,15 @@
                 <label for=twig">
                     <textarea name="twig" id="twig" class="twig" placeholder="twig" cols="42" rows="3">{{$twig_draft??""}}</textarea>
                 </label><br>
+
                 <label for="lang">
                     <select name="lang" class="form-select" aria-label="Default select example">
                         @foreach(config("languages.languageList") as $key => $lang)
-                            <option value={{$key}}>{{$lang}}</option>
+                            @if(\App\Models\User::query()->find(\Illuminate\Support\Facades\Auth::id())->last_select_program_language_id == $key)
+                                <option selected value={{$key}} >{{$lang}}</option>
+                            @else
+                                <option value={{$key}}>{{$lang}}</option>
+                            @endif
                         @endforeach
                     </select>
                 </label>

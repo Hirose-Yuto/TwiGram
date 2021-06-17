@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         "bio",
         "ignore_compiler_warning",
+        "last_select_program_language_id",
     ];
 
     /**

@@ -10,15 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class ProgramExecutor
 {
-    public static function executeProgram($text, $lang, $ignoreWarning) {
+    public static function executeProgram($text, $lang_index, $ignoreWarning) {
         $methods = config("languages.languageMethods");
         $langList = config("languages.languageList");
 
-        User::query()->find(Auth::id())->update(["ignore_compiler_warning"=>$ignoreWarning]);
+        User::query()->find(Auth::id())->update([
+            "ignore_compiler_warning"=>$ignoreWarning,
+            "last_select_program_language_id" => $lang_index]);
 
-        if(array_key_exists($lang, $langList) &&
-            array_key_exists($langList[$lang], $methods)) {
-            $method = $methods[$langList[$lang]];
+        if(array_key_exists($lang_index, $langList) &&
+            array_key_exists($langList[$lang_index], $methods)) {
+            $method = $methods[$langList[$lang_index]];
             $twig = ProgramExecutor::$method($text, $ignoreWarning);
 
             // ToDo:データベース追加

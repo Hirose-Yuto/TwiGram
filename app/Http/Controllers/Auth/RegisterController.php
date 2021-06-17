@@ -72,6 +72,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'screen_name' => $data['screen_name'],
             'ignore_compiler_warning' => false,
+            'last_select_program_language_id' => 1,
         ]);
     }
 }

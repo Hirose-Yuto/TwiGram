@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password', 255);
             $table->string("bio", 840)->nullable();
             $table->boolean("ignore_compiler_warning");
+            $table->foreignId("last_select_program_language_id")->constrained("program_languages", "program_language_id");
             $table->rememberToken();
             $table->timestamps();
         });

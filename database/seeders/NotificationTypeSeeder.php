@@ -15,11 +15,11 @@ class NotificationTypeSeeder extends Seeder
     public function run()
     {
         DB::table("notification_types")->insert([
-            NotificationTypeSeeder::data(0, "like"),
-            NotificationTypeSeeder::data(1, "mention"),
-            NotificationTypeSeeder::data(2, "retwig_with_comment"),
-            NotificationTypeSeeder::data(3, "reply"),
-            NotificationTypeSeeder::data(4, "follow"),
+            NotificationTypeSeeder::data(1, "like"),
+            NotificationTypeSeeder::data(2, "mention"),
+            NotificationTypeSeeder::data(3, "retwig_with_comment"),
+            NotificationTypeSeeder::data(4, "reply"),
+            NotificationTypeSeeder::data(5, "follow"),
         ]);
     }
 
