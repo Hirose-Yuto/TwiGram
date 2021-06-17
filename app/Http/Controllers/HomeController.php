@@ -39,7 +39,7 @@ class HomeController extends Controller
         }catch(ProgramExecutionException $e) {
             $e->report();
             $data = [
-                "exeptionMessage" => $e->exceptionMessage,
+                "exceptionMessage" => $e->exceptionMessage,
                 "customMessage" => $e->customMessage,
             ];
             return view("home", $data);

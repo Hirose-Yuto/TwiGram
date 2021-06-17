@@ -22,6 +22,8 @@
             </form>
         </div>
 
-        <h1>{!! nl2br(e($twig??"")) !!}</h1>
+        <h3>{!! nl2br(e($twig??"")) !!}</h3>
     </x-slot>
+    <x-slot name="exceptionMessage">{{$exceptionMessage??""}}</x-slot>
+    <x-slot name="customMessage">{{$customMessage??""}}</x-slot>
 </x-layouts>

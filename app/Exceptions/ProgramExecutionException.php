@@ -10,18 +10,19 @@ class ProgramExecutionException extends Exception
 {
     private $exceptionId_Message = [
         0 => "The language doesn't exist.",
-        1 => "Internal error happened",
-        2 => "Compile error happened",
-        3 => "Runtime error happened",
+        1 => "Internal error happened.",
+        2 => "Compile error happened.",
+        3 => "Runtime error happened.",
         4 => "Time limit exceeded.",
         5 => "Output is null.",
+        6 => "Warning"
         ];
 
     public $exceptionId;
     public $exceptionMessage;
     public $customMessage;
 
-    public function __construct($exceptionId, $customMessage)
+    public function __construct($exceptionId, $customMessage="")
     {
         if(array_key_exists($exceptionId, $this->exceptionId_Message)) {
             $this->exceptionId = $exceptionId;
@@ -34,6 +35,6 @@ class ProgramExecutionException extends Exception
     }
 
     public function report() {
-        Log::info($this->exceptionMessage." ", $this->customMessage);
+        Log::info($this->exceptionMessage." ".$this->customMessage);
     }
 }

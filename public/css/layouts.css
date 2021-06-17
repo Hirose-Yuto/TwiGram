@@ -26,3 +26,10 @@
 #body {
     margin-top: 22px;
 }
+
+#exception {
+    padding: 10px;
+    z-index: 1;
+    position: fixed;
+    background: #ff9999;
+}

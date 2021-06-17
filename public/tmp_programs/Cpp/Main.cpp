@@ -3,5 +3,6 @@
 using namespace std;
 
 int main(){
-std::cout << "hello world" << std::endl;
+int d[2] = {1, 3};
+std::cout << d[5] << std::endl;
 }

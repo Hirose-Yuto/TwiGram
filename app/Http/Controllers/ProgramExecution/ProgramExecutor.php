@@ -4,6 +4,8 @@
 namespace App\Http\Controllers\ProgramExecution;
 
 
+use App\Exceptions\ProgramExecutionException;
+
 class ProgramExecutor
 {
     public static function executeProgram($text, $lang) {
@@ -37,6 +39,9 @@ class ProgramExecutor
         return $text." feat. C";
     }
 
+    /**
+     * @throws ProgramExecutionException
+     */
     private static function Cpp($text) {
         $folder = "tmp_programs/Cpp/";
         $fileName = $folder."Main.cpp";
@@ -58,30 +63,29 @@ class ProgramExecutor
             // compile
             exec("clang++ " . $fileName . " -o ".$folder."Main.out 2>&1", $output, $return_var);
 
-            if ($return_var) {
+            // ToDo:オプションでWarningを省く
+            if ($return_var || $output) {
                 // compile error
-                return 'Output: ' . PHP_EOL . implode(PHP_EOL, $output);
+                throw new ProgramExecutionException(2, 'Output: ' . PHP_EOL . implode(PHP_EOL, $output));
             }else {
+                unset($output);
                 // run
-                exec($folder."Main.out 2>&1", $output, $return_var);
+                exec($folder."Main.out 1>&1", $output, $return_var);
 
                 if($return_var) {
                     // runtime error
-                    return 'Output: ' . PHP_EOL . implode(PHP_EOL, $output);
+                    throw new ProgramExecutionException(3, 'Output: ' . PHP_EOL . implode(PHP_EOL, $output));
                 } else {
                     if($output === []) {
                         // 出力なし
-                        // 例外
-                        return "出力がありません";
+                        throw new ProgramExecutionException(5);
                     } else {
                         return implode("\n", $output);
                     }
                 }
             }
         } else {
-            // can't write in the file
-            return "書き込めない";
+            throw new ProgramExecutionException(1);
         }
-
     }
 }

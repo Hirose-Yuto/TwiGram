@@ -27,9 +27,19 @@
                 <!--Header-->
                 {{$title}}
             </div>
+
             <div id="body">
                 {{$body}}
-           </div>
+            </div>
+
+            @if($exceptionMessage != null && $exceptionMessage != "")
+                <p id="exception" class="rounded">
+                    error! <br>
+                    {!! nl2br(e($exceptionMessage)) !!}<br>
+                    {!! nl2br(e($customMessage)) !!}
+                </p>
+                <script type="text/javascript" src="{{mix('js/exception.js')}}"></script>
+            @endif
         </div>
 
         <div class="col-3" id="r_sidebar">
@@ -66,7 +76,6 @@
         </div>
     </div>
 </div>
-
 
 </body>
 </html>
