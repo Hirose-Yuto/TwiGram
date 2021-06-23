@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Twig;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\FollowFollowedRelationship;
@@ -91,10 +92,6 @@ class ProfileController extends Controller
         }
     }
 
-    public function showFF($mode) {
-
-    }
-
     public function editProfilePage() {
         return view("profiles.editProfile");
     }
@@ -107,5 +104,13 @@ class ProfileController extends Controller
 
 
         return redirect('./../'.User::query()->find(Auth::id())->value("screen_name"), 302, [], env("IS_SECURE"));
+    }
+
+    private function showFF($mode) {
+
+    }
+
+    private function getTwigs($user_id, $num_of_twigs_to_get) {
+        return Twig::query()->select("twig_from", $user_id);
     }
 }

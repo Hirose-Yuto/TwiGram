@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ProgramExecutionException;
+use App\Models\Twig;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProgramExecution\ProgramExecutor;
@@ -41,20 +42,35 @@ class HomeController extends Controller
         }
 
         try {
+            // 実行結果&実行時間取得
             $program_result = ProgramExecutor::executeProgram($text, $lang_index, $ignoreWarning);
         }catch(ProgramExecutionException $e) {
+            // 記録
             $e->report();
+
+            // 表示するエラーメッセージ
             $data = [
                 "exceptionMessage" => $e->exceptionMessage,
                 "customMessage" => $e->customMessage,
+                "twig_draft" => $text,
             ];
             return view("home", $data);
         }
 
+        // twigをDBに登録
         $data = [
-            "twig" => $program_result,
-            "twig_draft" => "",
+            "program" => $text,
+            "program_result" => $program_result["program_result"],
+            "program_language_id" => $lang_index,
+            "execution_time" => $program_result["execution_time"],
+            "num_of_likes" => 0,
+            "num_of_retwigs" => 0,
+            "num_of_retwigs_with_comment" => 0,
+            "twig_from" => Auth::id(),
+            "reply_for" => null
         ];
+        Twig::query()->create($data);
+
         return view("home", $data);
 
         // return view("home", ["twig" => $text]);

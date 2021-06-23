@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class ProgramExecutor
 {
+    /**
+     * @throws ProgramExecutionException
+     */
     public static function executeProgram($text, $lang_index, $ignoreWarning) {
         $methods = config("languages.languageMethods");
         $langList = config("languages.languageList");
@@ -21,18 +24,10 @@ class ProgramExecutor
         if(array_key_exists($lang_index, $langList) &&
             array_key_exists($langList[$lang_index], $methods)) {
             $method = $methods[$langList[$lang_index]];
-            $twig = ProgramExecutor::$method($text, $ignoreWarning);
-
-            // ToDo:データベース追加
-
-            //
-            return $twig;
+            $twig_executionTime = ProgramExecutor::$method($text, $ignoreWarning);
+            return $twig_executionTime;
         } else {
-            // ToDo:例外を投げる
-
-            // 言語が存在しない
-            $twigs = ["twig" => ["error!"]];
-            return "error!";
+            throw new ProgramExecutionException(0);
         }
 
     }
@@ -77,6 +72,7 @@ class ProgramExecutor
                 // compile error
                 throw new ProgramExecutionException(2, 'Output: ' . PHP_EOL . implode(PHP_EOL, $output));
             }else {
+                $executionTime = 0;
                 unset($output);
                 // run
                 exec($folder."Main.out 1>&1", $output, $return_var);
@@ -89,7 +85,9 @@ class ProgramExecutor
                         // 出力なし
                         throw new ProgramExecutionException(5);
                     } else {
-                        return implode("\n", $output);
+                        return [
+                            "program_result" => implode("\n", $output),
+                            "execution_time" => $executionTime];
                     }
                 }
             }

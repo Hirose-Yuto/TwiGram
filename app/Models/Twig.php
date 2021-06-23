@@ -12,6 +12,5 @@ class Twig extends Model
 
     protected $guarded = [
         "twig_id",
-        "twig_from",
     ];
 }
