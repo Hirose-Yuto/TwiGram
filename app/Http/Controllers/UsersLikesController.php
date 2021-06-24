@@ -7,79 +7,52 @@ use Illuminate\Http\Request;
 
 class UsersLikesController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * ふぁぼをする。
+     * @param int $user_id
+     * @param int $twig_id
      */
-    public function index()
-    {
-        //
+    public static function like(int $user_id, int $twig_id) {
+        if(UserController::doesntExists($user_id) || TwigController::doesntExists($twig_id)) {
+            return;
+        }
+
+        $data = [
+            "user_id" => $user_id,
+            "twig_id" => $twig_id
+        ];
+        UsersLikes::query()->updateOrCreate($data);
+
+        TwigController::addNumOfLikes($twig_id);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * ユーザによってふぁぼられたツイッグのIDを返す。
+     * @param int $user_id
+     * @param int $num_of_twigs_to_get
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function create()
-    {
-        //
+    public static function getTwigsIdLikedBy(int $user_id, int $num_of_twigs_to_get = 15) {
+        return UsersLikes::query()
+            ->where("user_id", "=", $user_id)
+            ->orderByDesc("updated_at")
+            ->take($num_of_twigs_to_get)
+            ->get("twig_id");
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * ツイッグをふぁぼったユーザのIDを返す。
+     * @param int $twig_id
+     * @param int $num_of_users_to_get
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function store(Request $request)
-    {
-        //
+    public static function getUserIdLikeTwig(int $twig_id, int $num_of_users_to_get = 100) {
+        return UsersLikes::query()
+            ->where("twig_id", "=", $twig_id)
+            ->orderByDesc("updated_at")
+            ->take($num_of_users_to_get)
+            ->get("user_id");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\UsersLikes  $usersLikes
-     * @return \Illuminate\Http\Response
-     */
-    public function show(UsersLikes $usersLikes)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\UsersLikes  $usersLikes
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(UsersLikes $usersLikes)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\UsersLikes  $usersLikes
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, UsersLikes $usersLikes)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\UsersLikes  $usersLikes
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(UsersLikes $usersLikes)
-    {
-        //
-    }
 }
