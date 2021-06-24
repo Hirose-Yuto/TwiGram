@@ -89,6 +89,11 @@ class TwigController extends Controller
                      ->get();
     }
 
+    /**
+     * ふぁぼ数加算。
+     * @param int $twig_id
+     * @param int $num
+     */
     public static function addNumOfLikes(int $twig_id, int $num = 1) {
         if(self::doesntExists($twig_id)) {
             // ToDo:例外処理
@@ -100,5 +105,35 @@ class TwigController extends Controller
         Twig::query()->find($twig_id)->update($data);
     }
 
+    /**
+     * リツイッグ数加算。
+     * @param int $twig_id
+     * @param int $num
+     */
+    public static function addNumOfRetwigs(int $twig_id, int $num = 1) {
+        if(self::doesntExists($twig_id)) {
+            // ToDo:例外処理
+        }
+        $num_of_retwigs = Twig::query()->find($twig_id)->num_of_retwigs;
+        $data = [
+            "num_of_likes" => $num_of_retwigs + $num
+        ];
+        Twig::query()->find($twig_id)->update($data);
+    }
 
+    /**
+     * 引用リツイッグ数加算。
+     * @param int $twig_id
+     * @param int $num
+     */
+    public static function addNumOfRetwigsWithComment(int $twig_id, int $num = 1) {
+        if(self::doesntExists($twig_id)) {
+            // ToDo:例外処理
+        }
+        $num_of_retwigs_with_comment = Twig::query()->find($twig_id)->num_of_retwigs_with_comment;
+        $data = [
+            "num_of_likes" => $num_of_retwigs_with_comment + $num
+        ];
+        Twig::query()->find($twig_id)->update($data);
+    }
 }

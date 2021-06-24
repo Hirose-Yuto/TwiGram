@@ -25,7 +25,7 @@ class Twig extends Component
         $this->twig_how_long_ago = $this->getTwigHowLongAgo($twig->updated_at);
     }
 
-    private function getTwigHowLongAgo() {
+    private function getTwigHowLongAgo($twig_at) {
         return "1m -ToDO:Component/Twig直す ";
     }
 
