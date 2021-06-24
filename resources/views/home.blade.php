@@ -38,6 +38,9 @@
         </div>
 
         <h3>{!! nl2br(e($twig??"")) !!}</h3>
+        @foreach($twigs as $twig)
+            <x-twig :twig="$twig" />
+        @endforeach
     </x-slot>
     <x-slot name="exceptionMessage">{{$exceptionMessage??""}}</x-slot>
     <x-slot name="customMessage">{{$customMessage??""}}</x-slot>

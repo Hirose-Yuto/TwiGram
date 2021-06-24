@@ -72,23 +72,31 @@ class FollowFollowedRelationshipController extends Controller
     }
 
     /**
-     * ユーザのフォローしている人をすべてゲットする。
+     * ユーザがフォローしている人をすべてゲットする。
      * @param int $user_id
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function getFollowingUsers(int $user_id): array {
-        return FollowFollowedRelationship::query()
-            ->where("following_user_id", "=", $user_id)->get("followed_user_id");
+    public static function getUsersFollowedBy(int $user_id) {
+        $usersFollowedBy = [];
+        foreach(FollowFollowedRelationship::query()
+            ->where("following_user_id", "=", $user_id)->get("followed_user_id") as $followed_user_id) {
+            array_push($usersFollowedBy, User::query()->find($followed_user_id)[0]);
+        }
+        return $usersFollowedBy;
     }
 
     /**
      * ユーザをフォローしている人をすべてゲットする。
      * @param int $user_id
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function getFollowedUsers(int $user_id): array {
-        return FollowFollowedRelationship::query()
-            ->where("followed_user_id", "=", $user_id)->get("following_user_id");
+    public static function getUsersFollow(int $user_id) {
+        $usersFollow = [];
+        foreach(FollowFollowedRelationship::query()
+                    ->where("followed_user_id", "=", $user_id)->get("following_user_id") as $following_user_id) {
+            array_push($usersFollowedBy, User::query()->find($following_user_id)[0]);
+        }
+        return $usersFollow;
     }
 
     /**

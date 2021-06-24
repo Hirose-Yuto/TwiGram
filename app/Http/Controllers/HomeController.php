@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProgramExecution\ProgramExecutor;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\FollowFollowedRelationshipController as FFController;
+use App\Http\Controllers\TwigController;
+use const http\Client\Curl\AUTH_ANY;
 
 class HomeController extends Controller
 {
@@ -23,7 +26,10 @@ class HomeController extends Controller
     }
 
     public function timeline() {
-        return view("home");
+        $data = [
+            "twigs" => TwigController::getFollowingUserTwigs(Auth::id()),
+        ];
+        return view("home", $data);
     }
 
     // 投稿したものの処理を行う
@@ -75,7 +81,7 @@ class HomeController extends Controller
         Twig::query()->create($data);
 
         $data = [
-            "twigs" => $this->getFollowingUserTwigs()
+            "twigs" => TwigController::getFollowingUserTwigs(Auth::id()),
         ];
         return view("home", $data);
 
