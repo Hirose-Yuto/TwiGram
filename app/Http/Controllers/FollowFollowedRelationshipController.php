@@ -94,7 +94,7 @@ class FollowFollowedRelationshipController extends Controller
         $usersFollow = [];
         foreach(FollowFollowedRelationship::query()
                     ->where("followed_user_id", "=", $user_id)->get("following_user_id") as $following_user_id) {
-            array_push($usersFollowedBy, User::query()->find($following_user_id)[0]);
+            array_push($usersFollow, User::query()->find($following_user_id)[0]);
         }
         return $usersFollow;
     }

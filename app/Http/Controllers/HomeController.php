@@ -25,6 +25,10 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * タイムライン表示
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function timeline() {
         $data = [
             "twigs" => TwigController::getFollowingUserTwigs(Auth::id()),
@@ -32,13 +36,18 @@ class HomeController extends Controller
         return view("home", $data);
     }
 
-    // 投稿したものの処理を行う
+    /**
+     * 投稿したものの処理を行う
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function twig(Request $request){
         // validation
         $request->validate([
             "twig" => "required"
         ]);
 
+        // リクエストを処理
         $text = $request->get("twig");
         $lang_index = $request->get("lang");
         if($request->get("ignore_warning")) {
@@ -60,6 +69,7 @@ class HomeController extends Controller
                 "customMessage" => $e->customMessage,
                 "twig_draft" => $text,
             ];
+
             return view("home", $data);
         }
 
@@ -84,11 +94,6 @@ class HomeController extends Controller
             "twigs" => TwigController::getFollowingUserTwigs(Auth::id()),
         ];
         return view("home", $data);
-
-        // return view("home", ["twig" => $text]);
-        //return "<h1>".$text."</h1>";
     }
-
-
 
 }

@@ -1,5 +1,5 @@
 <x-layouts>
-    <x-slot name="title">{{"@".$user->value("screen_name")}}</x-slot>
+    <x-slot name="title">{{"@".$user->screen_name}}</x-slot>
     <x-slot name="header">
         <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
     </x-slot>
@@ -13,8 +13,8 @@
             <div class="container-fluid">
                 <div class="row" style="margin: 0">
                     <div class="col-6" id="name_id">
-                        <span style="font-size: large">{{$user->value("user_name")}}</span> <br>
-                        {{"@".$user->value("screen_name")}}
+                        <span style="font-size: large">{{$user->user_name}}</span> <br>
+                        {{"@".$user->screen_name}}
                     </div>
                     <div class="col-6" >
                         <div style="float: right">
@@ -28,7 +28,7 @@
                                     <x-slot name="url">/un-follow</x-slot>
                                     <x-slot name="default">Following</x-slot>
                                     <x-slot name="on_hover">Unfollow</x-slot>
-                                    <x-slot name="target">{{$user->value("user_id")}}</x-slot>
+                                    <x-slot name="target">{{$user->user_id}}</x-slot>
                                 </x-profile.following_followed_button>
                                 @break
 
@@ -37,7 +37,7 @@
                                 <x-slot name="url">/follow</x-slot>
                                 <x-slot name="default">Follow</x-slot>
                                 <x-slot name="on_hover">Follow</x-slot>
-                                <x-slot name="target">{{$user->value("user_id")}}</x-slot>
+                                <x-slot name="target">{{$user->user_id}}</x-slot>
                             </x-profile.following_followed_button>
                                 @break
                         @endswitch
@@ -56,15 +56,15 @@
                 </div>
             </div>
             <div id="bio">
-                {!! nl2br(e($user->value("bio")??"")) !!}
+                {!! nl2br(e($user->bio??"")) !!}
             </div>
             <div id="following_followers">
-                <a href={{"/".$user->value("screen_name")."/following"}}>{{$following??"0"}} <span style="color: darkgray;">Following</span></a>
-                <a href={{"/".$user->value("screen_name")."/followers"}}>{{$followers??"0"}} <span style="color: darkgray;">Followers</span></a>
+                <a href={{"/".$user->screen_name."/following"}}>{{$following??"0"}} <span style="color: darkgray;">Following</span></a>
+                <a href={{"/".$user->screen_name."/followers"}}>{{$followers??"0"}} <span style="color: darkgray;">Followers</span></a>
             </div>
         </div>
         @if($mode == "following")
-            <a id="profile_back_button" href={{"/".$user->value("screen_name")}}>戻る<a/>
+            <a id="profile_back_button" href={{"/".$user->screen_name}}>戻る<a/>
             @foreach($followed_users as $followed_user)
                 <div class="user_ff_mode">
                     <a href={{"/".$followed_user->screen_name}}>
@@ -76,7 +76,7 @@
 
             @endforeach
         @elseif($mode === "followers")
-            <a id="profile_back_button" href={{"/".$user->value("screen_name")}}>戻る<a/>
+            <a id="profile_back_button" href={{"/".$user->screen_name}}>戻る<a/>
             @foreach($following_users as $following_user)
                 <div class="user_ff_mode">
                     <a href={{"/".$following_user->screen_name}}>
@@ -96,11 +96,11 @@
                 @foreach($modes as $m => $msg)
                     @if($m == $mode)
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/{{$user->value("screen_name")}}/{{$m}}">{{$msg}}</a>
+                            <a class="nav-link active" aria-current="page" href="/{{$user->screen_name}}/{{$m}}">{{$msg}}</a>
                         </li>
                     @else
                         <li class="nav-item">
-                            <a class="nav-link" href="/{{$user->value("screen_name")}}/{{$m}}">{{$msg}}</a>
+                            <a class="nav-link" href="/{{$user->screen_name}}/{{$m}}">{{$msg}}</a>
                         </li>
                     @endif
                 @endforeach
