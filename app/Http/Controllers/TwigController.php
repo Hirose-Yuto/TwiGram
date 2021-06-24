@@ -38,6 +38,17 @@ class TwigController extends Controller
         // ToDo: 例外処理
     }
 
+
+    public function display($twig_id) {
+        $twig = self::getTwig($twig_id);
+        $user = UserController::getUser($twig->twig_from);
+        $data = [
+            "twig" => $twig,
+            "user" => $user
+        ];
+        return view("twigPage", $data);
+    }
+
     /**
      * ユーザのツイッグを取得(リプライは含めない)。
      * @param int $user_id

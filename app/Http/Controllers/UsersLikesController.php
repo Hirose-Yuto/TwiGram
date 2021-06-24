@@ -10,10 +10,13 @@ class UsersLikesController extends Controller
 
     /**
      * ふぁぼをする。
-     * @param int $user_id
-     * @param int $twig_id
+     * @param Request $request
      */
-    public static function like(int $user_id, int $twig_id) {
+    public static function like(Request $request) {
+
+        $user_id = $request->get("user_id");
+        $twig_id = $request->get("twig_id");
+
         if(UserController::doesntExists($user_id) || TwigController::doesntExists($twig_id)) {
             return;
         }

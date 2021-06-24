@@ -22,6 +22,8 @@ Route::get('/', "App\Http\Controllers\HomeController@timeline");
 
 // Twig処理
 Route::post('/', "App\Http\Controllers\HomeController@twig")->middleware("auth");
+// Twig表示
+Route::get('/twig/{twig_id}', "App\Http\Controllers\TwigController@display");
 
 // Settings
 Route::get('/settings', "App\Http\Controllers\SettingsController@settings")->middleware("auth");
@@ -30,9 +32,13 @@ Route::get('/settings', "App\Http\Controllers\SettingsController@settings")->mid
 Route::get('/edit-profile', "App\Http\Controllers\ProfileController@editProfilePage")->middleware("auth");
 Route::post('/edit-profile', "App\Http\Controllers\ProfileController@editProfile")->middleware("auth");
 
-// FollowFollowerRelationship
+// Follow
 Route::post('/follow', "App\Http\Controllers\FollowFollowedRelationshipController@follow")->middleware("auth");
+// Unfollow
 Route::post('/un-follow', "App\Http\Controllers\FollowFollowedRelationshipController@unFollow")->middleware("auth");
+
+// Like
+Route::post("/twig/like/{twig_id}", "App\Http\Controllers\UsersLikesController@like")->middleware("auth");
 
 Route::get('/hello',function(){
     return '<html><body><h1>hello world</h1></body></html>';
