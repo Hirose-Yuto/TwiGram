@@ -13,7 +13,7 @@ class CreateUsersTwigsTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_twigs', function (Blueprint $table) {
+        /* Schema::create('users_twigs', function (Blueprint $table) {
             $table->id("ownership_id");
             $table->foreignId("user_id")->constrained("users", "user_id");
             $table->foreignId("twig_id")->constrained("twigs", "twig_id");
@@ -21,6 +21,7 @@ class CreateUsersTwigsTable extends Migration
             $table->string("retwig_comment", 840);
             $table->timestamps();
         });
+        */
     }
 
     /**

@@ -67,14 +67,22 @@ class HomeController extends Controller
             "num_of_retwigs" => 0,
             "num_of_retwigs_with_comment" => 0,
             "twig_from" => Auth::id(),
-            "reply_for" => null
+            "reply_for" => null,
+            "is_retwig" => false,
+            "retwig_comment" => null,
+            "retwig_from" => null,
         ];
         Twig::query()->create($data);
 
+        $data = [
+            "twigs" => $this->getFollowingUserTwigs()
+        ];
         return view("home", $data);
 
         // return view("home", ["twig" => $text]);
         //return "<h1>".$text."</h1>";
     }
+
+
 
 }

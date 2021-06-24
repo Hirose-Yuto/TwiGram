@@ -91,7 +91,6 @@
                 <?php $modes=[
                     "" => "Twigs",
                     "with_replies" => "Twigs & Replies",
-                    "media" => "Media",
                     "likes" => "Likes",
                 ]?>
                 @foreach($modes as $m => $msg)
@@ -106,14 +105,17 @@
                     @endif
                 @endforeach
             </ul>
-            @switch($modes)
+            @switch($mode)
                 @case("")
+                    @foreach($contents as $twig)
+                        <x-twig :twig="$twig" />
+                    @endforeach
                 @break
 
                 @case("with_replies")
-                @break
-
-                @case("media")
+                    @foreach($contents as $twig)
+                        <x-twig :twig="$twig" />
+                    @endforeach
                 @break
 
                 @case("like")

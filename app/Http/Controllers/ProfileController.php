@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Twig;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\FollowFollowedRelationship;
 use Illuminate\Support\Facades\Auth;
-use function Sodium\add;
+use App\Http\Controllers\FollowFollowedRelationshipController as FFController;
 
 class ProfileController extends Controller
 {
@@ -16,8 +15,30 @@ class ProfileController extends Controller
             $user = User::query()->where("screen_name", "=", $screen_name);
             $data["user"] = $user;
 
-            // (profile), with_replies, media, likes, following, followers
+            // (profile), with_replies, likes, following, followers
             $data["mode"] = $mode;
+            switch ($mode) {
+                case "":
+                    $data["contents"] = TwigController::getTwigsWithoutReplies($user->value("user_id"));
+                    break;
+
+                case "with_replies":
+                    $data["contents"] = TwigController::getTwigsIncludingReplies($user->value("user_id"));
+                    break;
+
+                case "likes":
+                    break;
+
+                case "following":
+                    break;
+
+                case "followers":
+                    break;
+
+                default:
+                    break;
+            }
+
             if ($mode) {
                 $data["profile_body"] = $mode . "が入ります";
             } else {
@@ -29,10 +50,7 @@ class ProfileController extends Controller
             if(Auth::check()) {
                 if (Auth::id() == $user->value("user_id")) {
                     $data["followingState"] = "edit";
-                } else if (FollowFollowedRelationship::query()
-                    ->where("following_user_id", "=", Auth::id())
-                    ->where("followed_user_id", "=", $user->value("user_id"))
-                    ->exists()) {
+                } else if (FFController::isFollowed(Auth::id(), $user->value("user_id"))) {
                     // フォローしてる
                     $data["followingState"] = "following";
                 } else {
@@ -46,10 +64,7 @@ class ProfileController extends Controller
             if(Auth::check()) {
                 if (Auth::id() == $user->value("user_id")) {
                     $data["followedState"] = "none";
-                } else if (FollowFollowedRelationship::query()
-                    ->where("following_user_id", "=", $user->value("user_id"))
-                    ->where("followed_user_id", "=", Auth::id())
-                    ->exists()) {
+                } else if (FFController::isFollowed($user->value("user_id"), Auth::id())) {
                     // フォローされてる
                     $data["followedState"] = "following";
                 } else {
@@ -80,10 +95,8 @@ class ProfileController extends Controller
 
 
             //FFの数
-            $data["following"] = FollowFollowedRelationship::query()
-                ->where("following_user_id", "=", $user->value("user_id"))->count();
-            $data["followers"] = FollowFollowedRelationship::query()
-                ->where("followed_user_id", "=", $user->value("user_id"))->count();
+            $data["following"] = FFController::getNumOfFollowingUsers($user->value("user_id"));
+            $data["followers"] = FFController::getNumOfFollowedUsers($user->value("user_id"));
 
             return view("profiles.profile", $data);
         } else {
@@ -110,7 +123,5 @@ class ProfileController extends Controller
 
     }
 
-    private function getTwigs($user_id, $num_of_twigs_to_get) {
-        return Twig::query()->select("twig_from", $user_id);
-    }
+
 }

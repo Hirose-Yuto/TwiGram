@@ -25,6 +25,10 @@ class CreateTwigsTable extends Migration
             $table->integer("num_of_retwigs_with_comment");
             $table->foreignId("twig_from")->constrained("users", "user_id");
             $table->foreignId("reply_for")->nullable()->constrained("twigs", "twig_id");
+
+            $table->boolean("is_retwig");
+            $table->string("retwig_comment", 840)->nullable();
+            $table->foreignId("retwig_from")->nullable()->constrained("twigs", "twig_id");
         });
     }
 

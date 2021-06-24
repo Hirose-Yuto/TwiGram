@@ -33,11 +33,19 @@ class ProgramExecutor
     }
 
     private static function PlainText($text, $ignoreWarning) {
-        return $text;
+        $executionTime = 0;
+        return [
+            "program_result" => $text,
+            "execution_time" => $executionTime
+        ];
     }
 
     private static function C($text, $ignoreWarning) {
-        return $text." feat. C";
+        $executionTime = 0;
+        return [
+            "program_result" => $text." feat. C",
+            "execution_time" => $executionTime
+        ];
     }
 
     /**
@@ -87,7 +95,8 @@ class ProgramExecutor
                     } else {
                         return [
                             "program_result" => implode("\n", $output),
-                            "execution_time" => $executionTime];
+                            "execution_time" => $executionTime
+                        ];
                     }
                 }
             }
