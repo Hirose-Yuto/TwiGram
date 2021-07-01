@@ -12,6 +12,7 @@ class Twig extends Component
     public $twig;
     public $user;
     public $twig_how_long_ago;
+    public $twig_url;
 
     /**
      * Create a new component instance.
@@ -23,6 +24,8 @@ class Twig extends Component
         $this->twig = $twig;
         $this->user = UserController::getUser($twig->twig_from);
         $this->twig_how_long_ago = $this->getTwigHowLongAgo($twig->updated_at);
+
+        $this->twig_url = "/twig/".$twig->twig_id;
     }
 
     private function getTwigHowLongAgo($twig_at) {

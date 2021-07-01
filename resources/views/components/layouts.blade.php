@@ -5,10 +5,12 @@
     <title>{{$title}} / TwiGram</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{asset('css/home.css')}}" rel="stylesheet">
-    <script src="{{ asset('js/app.js') }}"></script>
-
     <link rel="stylesheet" href="{{ asset('css/layouts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/twig.css') }}">
+
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/twig.js') }}"></script>
     {{$header??""}}
 </head>
 <body>

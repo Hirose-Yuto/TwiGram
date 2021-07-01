@@ -1,0 +1,23 @@
+.twig_at_home,
+.twig_at_home:hover,
+.twig_at_home:visited,
+.twig_at_home:active
+{
+    padding: 5px;
+    color: inherit;
+    border-bottom-color: #203864;
+    border-bottom-style: solid;
+    border-width: thin;
+}
+
+.twig_at_home:hover {
+    text-decoration: none;
+}
+
+.user_at_twig,
+.user_at_twig:hover,
+.user_at_twig:visited,
+.user_at_twig:active
+{
+    color: inherit;
+}
