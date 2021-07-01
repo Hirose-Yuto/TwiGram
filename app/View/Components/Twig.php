@@ -26,7 +26,17 @@ class Twig extends Component
     }
 
     private function getTwigHowLongAgo($twig_at) {
-        return "1m -ToDO:Component/Twig直す ";
+        $at = new \DateTimeImmutable($twig_at);
+        $diff = $at->diff(new \DateTimeImmutable());
+        if($diff->format("%Y%M%D") != "000000") {
+            return $at->format("Y-m-d");
+        } else if($diff->format("%H") != "00") {
+            return $diff->format("%hh");
+        } else if($diff->format("%I") != "00") {
+            return $diff->format("%im");
+        } else {
+            return $diff->format("%ss");
+        }
     }
 
     /**

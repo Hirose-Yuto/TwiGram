@@ -44,7 +44,7 @@ class TwigController extends Controller
         $user = UserController::getUser($twig->twig_from);
         $data = [
             "twig" => $twig,
-            "user" => $user
+            "user" => $user,
         ];
         return view("twigPage", $data);
     }
