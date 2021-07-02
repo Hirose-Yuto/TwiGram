@@ -10,4 +10,9 @@ class UsersLikes extends Model
     use HasFactory;
     protected $primaryKey = "like_id";
 
+    protected $fillable = [
+        "user_id",
+        "twig_id"
+    ];
+
 }

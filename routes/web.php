@@ -38,7 +38,7 @@ Route::post('/follow', "App\Http\Controllers\FollowFollowedRelationshipControlle
 Route::post('/un-follow', "App\Http\Controllers\FollowFollowedRelationshipController@unFollow")->middleware("auth");
 
 // Like
-Route::post("/twig/like/{twig_id}", "App\Http\Controllers\UsersLikesController@like")->middleware("auth");
+Route::post("/twig/like", "App\Http\Controllers\UsersLikesController@like")->middleware("auth");
 
 Route::get('/hello',function(){
     return '<html><body><h1>hello world</h1></body></html>';

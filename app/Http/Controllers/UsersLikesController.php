@@ -7,27 +7,47 @@ use Illuminate\Http\Request;
 
 class UsersLikesController extends Controller
 {
-
     /**
      * ふぁぼをする。
      * @param Request $request
      */
     public static function like(Request $request) {
 
-        $user_id = $request->get("user_id");
         $twig_id = $request->get("twig_id");
+        $user_id = $request->get("user_id");
 
         if(UserController::doesntExists($user_id) || TwigController::doesntExists($twig_id)) {
             return;
         }
 
-        $data = [
-            "user_id" => $user_id,
-            "twig_id" => $twig_id
-        ];
-        UsersLikes::query()->updateOrCreate($data);
+        if(self::is_userLikedTwig($user_id, $twig_id)) {
+            UsersLikes::query()
+                ->where("user_id", "=", $user_id)
+                ->where("twig_id", "=", $twig_id)
+                ->delete();
+            TwigController::addNumOfLikes($twig_id, -1);
+        } else {
+            $data = [
+                "user_id" => $user_id,
+                "twig_id" => $twig_id
+            ];
+            UsersLikes::query()->updateOrCreate($data);
 
-        TwigController::addNumOfLikes($twig_id);
+            TwigController::addNumOfLikes($twig_id);
+        }
+    }
+
+    /**
+     * ユーザがツイッグをふぁぼしてるかどうか
+     * @param int $user_id
+     * @param int $twig_id
+     * @return bool
+     */
+    public static function is_userLikedTwig(int $user_id, int $twig_id) {
+        return UsersLikes::query()
+            ->where("user_id", "=", $user_id)
+            ->where("twig_id", "=", $twig_id)
+            ->exists();
     }
 
     /**

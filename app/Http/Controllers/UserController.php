@@ -36,4 +36,11 @@ class UserController extends Controller
         }
         // ToDo:例外処理
     }
+
+    public static function getUserId($screen_name) {
+        if(User::query()->where("screen_name", $screen_name)->exists()) {
+            return User::query()->where("screen_name", $screen_name)->get("user_id")[0];
+        }
+        // ToDo:例外処理
+    }
 }
