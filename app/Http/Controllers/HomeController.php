@@ -90,10 +90,8 @@ class HomeController extends Controller
         ];
         Twig::query()->create($data);
 
-        $data = [
-            "twigs" => TwigController::getFollowingUserTwigs(Auth::id()),
-        ];
-        return view("home", $data);
+
+        return $this->timeline();
     }
 
 }

@@ -51,6 +51,28 @@ class UsersLikesController extends Controller
     }
 
     /**
+     * ふぁぼ数を返す
+     * @param int $twig_id
+     * @return int
+     */
+    public static function numOfLikes(int $twig_id): int {
+        return UsersLikes::query()
+            ->where("twig_id", "=", $twig_id)
+            ->count();
+    }
+
+    /**
+     * ユーザがふぁぼしたツイッグ数
+     * @param int $user_id
+     * @return int
+     */
+    public static function numOfLikesBy(int $user_id): int {
+        return UsersLikes::query()
+            ->where("user_id", "=", $user_id)
+            ->count();
+    }
+
+    /**
      * ユーザによってふぁぼられたツイッグのIDを返す。
      * @param int $user_id
      * @param int $num_of_twigs_to_get

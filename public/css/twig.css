@@ -22,7 +22,22 @@
     color: inherit;
 }
 
+.twig_body {
+    margin-left: 20px;
+}
+
+.retwig_from {
+    margin-left: 20px;
+    margin-right: 10px;
+    padding: 5px;
+    border-color: #203864;
+    border-style: solid;
+    border-width: thin;
+}
+
+
 .reply_retwig_like {
+    margin-left: 20px;
     height: auto;
     display        : flex;                 /* FlexBox定義         */
     justify-content: flex-start;           /* 揃えの定義          */
@@ -35,11 +50,21 @@
 }
 
 .retwig {
-    margin-left: 5px;
+    margin-left: 10px;
     margin-right: 5px;
 }
 
 .like {
-    margin-left: 5px;
+    margin-left: 10px;
     margin-right: 5px;
+}
+
+.num_of_retwigs {
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
+.num_of_likes {
+    margin-left: 5px;
+    margin-right: 10px;
 }

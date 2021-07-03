@@ -37,6 +37,10 @@ Route::post('/follow', "App\Http\Controllers\FollowFollowedRelationshipControlle
 // Unfollow
 Route::post('/un-follow', "App\Http\Controllers\FollowFollowedRelationshipController@unFollow")->middleware("auth");
 
+// Reply
+Route::post("/twig/reply", "App\Http\Controllers\TwigController@reply")->middleware("auth");
+// Retwig
+Route::post("/twig/retwig", "App\Http\Controllers\TwigController@retwig")->middleware("auth");
 // Like
 Route::post("/twig/like", "App\Http\Controllers\UsersLikesController@like")->middleware("auth");
 
