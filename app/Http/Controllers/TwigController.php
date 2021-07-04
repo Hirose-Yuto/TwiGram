@@ -122,12 +122,23 @@ class TwigController extends Controller
         return redirect('/', 302, [], env("IS_SECURE"));
     }
 
+    /**
+     * リクエストに基づいてツイッグを削除する。
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public static function deleteTwig(Request $request) {
+        $twig_id = $request->get("twig_id");
+        self::deleteTwigByData(["twig_id" => $twig_id]);
 
+        return redirect('/', 302, [], env("IS_SECURE"));
     }
 
     /**
-     * リツイッグ元、リプライ先であればnullに
+     * ツイッグを削除する。
+     * ただし、リツイッグされている、リプライあれているのであればnullに、
+     * ふぁぼされてたら削除、
+     * それがリツイッグだったら数を減らす。
      * @param $data
      */
     public static function deleteTwigByData($data) {
