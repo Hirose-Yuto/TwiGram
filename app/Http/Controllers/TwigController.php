@@ -32,12 +32,24 @@ class TwigController extends Controller
      */
     public function retwig(Request $request) {
         $comment = $request->get("comment");
+        $lang_index = $request->get("lang");
+        $retwig_from = $request->get("retwig_from");
         if($comment != "") {
             return self::quoteRetwig($request);
         }
 
-        $lang_index = $request->get("lang");
-        $retwig_from = $request->get("retwig_from");
+        if(Twig::query()
+            ->where("retwig_from", "=", $retwig_from)
+            ->where("program_result", "=", "")
+        ->exists())
+        {
+            self::deleteTwigByData([
+                "retwig_from" => $retwig_from,
+                "program_result" => "",
+            ]);
+
+            return redirect('/', 302, [], env("IS_SECURE"));
+        }
 
         // twigをDBに登録
         $data = [
@@ -108,6 +120,54 @@ class TwigController extends Controller
         self::addNumOfRetwigsWithComment($retwig_from);
 
         return redirect('/', 302, [], env("IS_SECURE"));
+    }
+
+    public static function deleteTwig(Request $request) {
+
+    }
+
+    /**
+     * リツイッグ元、リプライ先であればnullに
+     * @param $data
+     */
+    public static function deleteTwigByData($data) {
+        $query = Twig::query();
+        foreach($data as $key => $value) {
+            $query->where($key, "=", $value);
+        }
+        $twig_ids = $query->get("twig_id");
+        foreach($twig_ids as $object) {
+            $twig_id = $object->twig_id;
+            // リツイッグされていればnullに
+            foreach(Twig::query()
+                ->where("retwig_from", "=", $twig_id)
+                ->get("twig_id") as $twig_id_to_delete) {
+                Twig::query()->find($twig_id_to_delete)->update(["retwig_from" => null]);
+            }
+            // リプライされていればnullに
+            foreach(Twig::query()
+                        ->where("reply_for", "=", $twig_id)
+                        ->get("twig_id") as $twig_id_to_delete) {
+                Twig::query()->find($twig_id_to_delete)->update(["reply_for" => null]);
+            }
+            // ふぁぼは消す
+            UsersLikesController::deleteLikeByData(["twig_id" => $twig_id]);
+
+            // リツイッグであったら数を減らす
+            if(Twig::query()->where("twig_id", "=", $twig_id)->whereNotNull("retwig_from")->exists()) {
+                $retwig_from = Twig::query()->where("twig_id", "=", $twig_id)->get()[0]->retwig_from;
+                if (Twig::query()->where("twig_id", "=", $retwig_from)->get("program_result")[0]->program_result == "") {
+                    // ただのリツイッグ
+                    self::addNumOfRetwigs($retwig_from, -1);
+                } else {
+                    //引用リツイッグ
+                    self::addNumOfRetwigsWithComment($retwig_from, -1);
+                }
+            }
+
+            // 本体を消す
+            Twig::query()->where("twig_id", "=", $twig_id)->delete();
+        }
     }
 
 
@@ -190,16 +250,17 @@ class TwigController extends Controller
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public static function getFollowingUserTwigs(int $user_id, int $num_of_twigs_to_get = 15) {
-        // 返信含まない&自分自身
-        $twigs = Twig::query()->where("twig_from", "=", Auth::id())
-                              ->where("reply_for", "=", null);
-
-
-        // フォローしてる人のツイッグ取得
-        $followedUsers = FollowFollowedRelationshipController::getUsersFollowedBy($user_id);
-        foreach($followedUsers as $followedUser) {
-            $twigs->orWhere("twig_from", "=" , $followedUser->user_id);
-        }
+        // 返信含まない
+        $twigs = Twig::query()->where("reply_for", "=", null)
+            ->where(function ($query) use ($user_id){
+                //自分自身
+                $query->where("twig_from", "=", Auth::id());
+                // フォローしてる人のツイッグ取得
+                $followedUsers = FollowFollowedRelationshipController::getUsersFollowedBy($user_id);
+                foreach($followedUsers as $followedUser) {
+                    $query->orWhere("twig_from", "=" , $followedUser->user_id);
+                }
+            });
 
         return $twigs->orderByDesc("created_at")
                      ->take($num_of_twigs_to_get)

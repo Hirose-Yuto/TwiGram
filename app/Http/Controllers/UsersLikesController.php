@@ -100,4 +100,16 @@ class UsersLikesController extends Controller
             ->get("user_id");
     }
 
+    /**
+     * ふぁぼを消す
+     * @param $data
+     */
+    public static function deleteLikeByData($data) {
+        $query = UsersLikes::query();
+        foreach($data as $key => $value) {
+            $query->where($key, "=", $value);
+        }
+        $query->delete();
+    }
+
 }
