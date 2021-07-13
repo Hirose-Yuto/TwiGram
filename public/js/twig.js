@@ -29,8 +29,7 @@ $(function () {
             </div>
             `
             $(document).on('click', '#twig_delete_'+twig_id, function (){
-                // window.alert("are you sure to delete this twig?")
-                if(confirm("are you sure to delete this twig?")) {
+                if(confirm("Are you sure to delete this twig?")) {
                     $.post("/twig/delete/", {
                         twig_id:twig_id,
                         _token : $('meta[name="csrf-token"]').attr('content')
@@ -88,11 +87,10 @@ function retwigBox(twig_id) {
     }
 }
 
-function like(twig_id, user_id, token) {
+function like(twig_id, token) {
     $.post("/twig/like/",
         {
             twig_id : twig_id,
-            user_id : user_id,
             _token : token,
         },
         function (data, textStatus, jqXHR) {

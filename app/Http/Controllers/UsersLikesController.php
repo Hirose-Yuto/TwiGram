@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UsersLikes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersLikesController extends Controller
 {
@@ -14,7 +15,7 @@ class UsersLikesController extends Controller
     public static function like(Request $request) {
 
         $twig_id = $request->get("twig_id");
-        $user_id = $request->get("user_id");
+        $user_id = Auth::id();
 
         if(UserController::doesntExists($user_id) || TwigController::doesntExists($twig_id)) {
             return;
