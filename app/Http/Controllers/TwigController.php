@@ -18,9 +18,27 @@ class TwigController extends Controller
     public function display($twig_id) {
         $twig = self::getTwig($twig_id);
         $user = UserController::getUser($twig->twig_from);
+
+        $twig_from = UserController::getUser($twig->twig_from);
+        $is_retwig = $twig->is_retwig;
+        $retwig_from = -1;
+        $retwig_from_twig = -1;
+        if($is_retwig) {
+            $retwig_from = new Twig(TwigController::getTwig($twig->retwig_from));
+            $retwig_from_twig = $retwig_from->twig;
+        }
+
+        $is_userRetwig = TwigController::is_retwigBy($twig_id, Auth::id());
+        $is_userLike = UsersLikesController::is_userLikedTwig(Auth::id(), $twig_id);
+
         $data = [
             "twig" => $twig,
             "user" => $user,
+            "is_retwig" => $is_retwig,
+            "retwig_from" => $retwig_from,
+            "retwig_from_twig" => $retwig_from_twig,
+            "is_userRetwig" => $is_userRetwig,
+            "is_userLike" => $is_userLike,
         ];
         return view("twigPage", $data);
     }

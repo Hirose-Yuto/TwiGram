@@ -29,13 +29,11 @@ class Twig extends Component
     public $is_userRetwig;
     public $is_userLike;
 
-
-
-
     /**
      * Create a new component instance.
      *
      * @return void
+     * @throws \Exception
      */
     public function __construct(T $twig)
     {
