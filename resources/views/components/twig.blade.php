@@ -4,7 +4,7 @@
         </span>
     <x-twig :twig="$retwig_from_twig" />
 @else
-<div class="twig_at_home">
+    <div class="twig_at_home" id='twig_{{$twig_id}}'>
     <div onclick="jump('{{$twig_url}}')">
         <object>
             <a href="{{"/".$twig_from->screen_name}}" class="user_at_twig">
@@ -14,9 +14,9 @@
         </object>
         <span style="color: darkgray">{{$twig_how_long_ago}}</span>
         @if($twig_from->user_id == $auth_user_id)
-            <object>
-                <button class="btn btn-secondary" style="float: right" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-html="true" data-bs-content="delete">
-                    delete
+            <object onclick="doNothing(arguments[0])">
+                <button class="btn btn-secondary" style="float: right" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-html="true" data-content_div_id="more_button_{{$twig_id}}">
+                    More
                 </button>
             </object>
         @endif
@@ -29,7 +29,9 @@
             <span>{{$retwig_from->twig_from->user_name}}</span>
             <span style="color: darkgray">{{"@".$retwig_from->twig_from->screen_name}}</span>
             <span style="color: darkgray">{{$retwig_from->twig_how_long_ago}}</span> <br>
-            {!! nl2br(e($retwig_from->twig->program_result)) !!}
+            <div style="padding-left: 5px">
+                {!! nl2br(e($retwig_from->twig->program_result)) !!}
+            </div>
         </div>
     @endif
 

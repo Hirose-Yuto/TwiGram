@@ -1,6 +1,66 @@
+$(function () {
+    $('[data-toggle="popover"]').popover({
+        content: function () {
+            const contentDivId = '#' + $(this).data('content_div_id');
+            const twig_id = new RegExp("\\d+").exec(contentDivId)[0];
+            let content = `
+            <div class="list-group">
+                <div class="list-group-item list-group-item-action" id="twig_delete_${twig_id}">
+                    delete
+                </div>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `
+            $(document).on('click', '#twig_delete_'+twig_id, function (){
+                // window.alert("are you sure to delete this twig?")
+                if(confirm("are you sure to delete this twig?")) {
+                    $.post("/twig/delete/", {
+                        twig_id:twig_id,
+                        _token : $('meta[name="csrf-token"]').attr('content')
+                    }, function () {
+                        location.reload()
+                    })
+                }
+            })
+            return content;
+        }
+    })
+})
+const popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+    trigger: 'focus'
+});
+const myModal = document.getElementById('myModal');
+const myInput = document.getElementById('myInput');
+
+myModal.addEventListener('shown.bs.modal', function () {
+    myInput.focus()
+})
+
+function doNothing(e) {
+    e.stopPropagation();
+}
+
 function jump(twig_url) {
     location.href = twig_url;
 }
+
 
 function replyBox(twig_id) {
     let replyBoxElement = document.getElementById("reply_input_"+twig_id);

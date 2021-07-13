@@ -129,7 +129,9 @@ class TwigController extends Controller
      */
     public static function deleteTwig(Request $request) {
         $twig_id = $request->get("twig_id");
-        self::deleteTwigByData(["twig_id" => $twig_id]);
+        if(self::whoTwig($twig_id) == Auth::id()) {
+            self::deleteTwigByData(["twig_id" => $twig_id]);
+        }
 
         return redirect('/', 302, [], env("IS_SECURE"));
     }
@@ -198,6 +200,15 @@ class TwigController extends Controller
      */
     public static function doesntExists(int $twig_id): bool {
         return Twig::query()->find($twig_id)->doesntExist();
+    }
+
+    /**
+     * 誰がtwigしたのか
+     * @param int $twig_id
+     * @return int twigging user id
+     */
+    public static function whoTwig(int $twig_id): int {
+        return Twig::query()->find($twig_id)->twig_from;
     }
 
     /**
