@@ -17,7 +17,7 @@ class UsersLikesController extends Controller
         $twig_id = $request->get("twig_id");
         $user_id = Auth::id();
 
-        if(UserController::doesntExists($user_id) || TwigController::doesntExists($twig_id)) {
+        if(TwigController::doesntExists($twig_id)) {
             return;
         }
 
@@ -74,17 +74,22 @@ class UsersLikesController extends Controller
     }
 
     /**
-     * ユーザによってふぁぼられたツイッグのIDを返す。
+     * ユーザによってふぁぼられたツイッグを返す。
      * @param int $user_id
      * @param int $num_of_twigs_to_get
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @return array
      */
-    public static function getTwigsIdLikedBy(int $user_id, int $num_of_twigs_to_get = 15) {
-        return UsersLikes::query()
+    public static function getTwigsLikedBy(int $user_id, int $num_of_twigs_to_get = 15) {
+        $likes =  UsersLikes::query()
             ->where("user_id", "=", $user_id)
             ->orderByDesc("updated_at")
             ->take($num_of_twigs_to_get)
-            ->get("twig_id");
+            ->get();
+        $twigs = [];
+        foreach ($likes as $like) {
+            array_push($twigs, TwigController::getTwig($like->twig_id));
+        }
+        return $twigs;
     }
 
     /**

@@ -34,6 +34,7 @@ class ProfileController extends Controller
                     break;
 
                 case "likes":
+                    $data["contents"] = UsersLikesController::getTwigsLikedBy($user->user_id);
                     break;
 
                 case "following":

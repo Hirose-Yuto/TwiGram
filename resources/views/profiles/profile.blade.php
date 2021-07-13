@@ -118,7 +118,10 @@
                     @endforeach
                 @break
 
-                @case("like")
+                @case("likes")
+                    @foreach($contents as $twig)
+                        <x-twig :twig="$twig" />
+                    @endforeach
                 @break
             @endswitch
         @endif
