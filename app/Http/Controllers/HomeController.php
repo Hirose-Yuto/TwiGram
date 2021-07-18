@@ -65,6 +65,7 @@ class HomeController extends Controller
 
             // 表示するエラーメッセージ
             $data = [
+                "twigs" => TwigController::getFollowingUserTwigs(Auth::id()),
                 "exceptionMessage" => $e->exceptionMessage,
                 "customMessage" => $e->customMessage,
                 "twig_draft" => $text,

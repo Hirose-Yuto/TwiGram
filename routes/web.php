@@ -20,15 +20,20 @@ use Illuminate\Support\Facades\Route;
 // login, register, logout予約済み
 Auth::routes();
 
+Route::get('/twigs',function(){
+    $twigs = \App\Models\Twig::search('な')->get();
+    echo $twigs;
+});
+
 // Home画面
-Route::get('/', "App\Http\Controllers\HomeController@timeline");
+Route::get('/', "App\Http\Controllers\HomeController@timeline")->middleware("auth");
 
 // Twig
 Route::post('/', "App\Http\Controllers\HomeController@twig")->middleware("auth");
 // Delete Twig
 Route::post('/twig/delete', "App\Http\Controllers\TwigController@deleteTwig")->middleware("auth");
 // Twig表示
-Route::get('/twig/{twig_id}', "App\Http\Controllers\TwigController@display");
+Route::get('/twig/{twig_id}', "App\Http\Controllers\TwigController@display")->middleware("auth");
 
 // Settings
 Route::get('/settings', "App\Http\Controllers\SettingsController@settings")->middleware("auth");

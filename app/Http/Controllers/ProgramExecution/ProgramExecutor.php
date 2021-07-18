@@ -6,7 +6,6 @@ namespace App\Http\Controllers\ProgramExecution;
 
 use App\Exceptions\ProgramExecutionException;
 use App\Models\User;
-use http\Encoding\Stream\Inflate;
 use Illuminate\Support\Facades\Auth;
 
 class ProgramExecutor
@@ -30,7 +29,18 @@ class ProgramExecutor
         if(array_key_exists($lang_index, $langList) &&
             array_key_exists($langList[$lang_index], $methods)) {
             $method = $methods[$langList[$lang_index]];
-            $twig_executionTime = ProgramExecutor::$method($text, $ignoreWarning);
+            if($method == "PlainText") {return ["program_result"=>$text, "execution_time"=>0];}
+            // コンテナ作成
+            $container_name = self::generateContainerName();
+            exec('/usr/local/bin/docker run -d --privileged --name '.$container_name.' '.config("languages.imageNames")[$langList[$lang_index]].' /sbin/init' , $output, $return_var);
+            try {
+                $twig_executionTime = ProgramExecutor::$method($text, $ignoreWarning, $container_name);
+            }finally {
+                echo "finally ".$container_name;
+                // コンテナ削除
+                exec('/usr/local/bin/docker stop '.$container_name.' && /usr/local/bin/docker rm '.$container_name." > /dev/null &");
+            }
+
             return $twig_executionTime;
         } else {
             throw new ProgramExecutionException(0);
@@ -56,9 +66,10 @@ class ProgramExecutor
      * C言語実行
      * @param string $text
      * @param bool $ignoreWarning
+     * @param string
      * @return array
      */
-    private static function C(string $text, bool $ignoreWarning) {
+    private static function C(string $text, bool $ignoreWarning, string $containerName) {
         $executionTime = 0;
         return [
             "program_result" => $text." feat. C",
@@ -70,10 +81,11 @@ class ProgramExecutor
      * C++実行(clang++)
      * @param string $text
      * @param bool $ignoreWarning
+     * @param string $containerName
      * @return array
      * @throws ProgramExecutionException
      */
-    private static function Cpp(string $text, bool $ignoreWarning) {
+    private static function Cpp(string $text, bool $ignoreWarning, string $containerName) {
         $folder = "tmp_programs/Cpp/";
         $fileName = $folder."Main.cpp";
         $text = "#include<iostream>\n".
@@ -83,17 +95,23 @@ class ProgramExecutor
                     $text.
                 "\n}";
 
+        $output = [];
+        $return_var = 1;
+
         // ファイル書き込み
-        if (file_put_contents($fileName, $text, LOCK_EX)) {
-            $output = [];
-            $return_var = 1;
+        exec('/usr/local/bin/docker exec -it '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && echo -e '.$text.' > Main.cpp"', $output, $return_var);
+        if (!$return_var) {
+            // 初期化
+            unset($output);
+
             $executionTime = 0;
 
             //exec("g++ --version", $output, $return_var); //g++ (Homebrew GCC 10.2.0_4) 10.2.0Copyright (C) 2020 Free Software Foundation, Inc.This is free software; see the source for copying conditions. There is NOwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
             //exec("gcc --version", $output, $return_var); // Apple clang version 11.0.3 (clang-1103.0.32.29)Target: x86_64-apple-darwin19.6.0Thread model: posixInstalledDir: /Library/Developer/CommandLineTools/usr/bin
 
             // compile
-            exec("clang++ " . $fileName . " -o ".$folder."Main.out 2>&1", $output, $return_var);
+            $command = "g++ " . $fileName . " -o ".$folder."Main.out 2>&1";
+            exec('/usr/local/bin/docker exec -it '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && '.$command.'"', $output, $return_var);
 
             if(!$ignoreWarning && $output) {
                 // warning
@@ -108,7 +126,8 @@ class ProgramExecutor
             unset($output);
 
             // run
-            exec($folder."Main.out 1>&1", $output, $return_var);
+            $command = $folder."Main.out 1>&1";
+            exec('/usr/local/bin/docker exec -it '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && '.$command.'"', $output, $return_var);
 
             if($return_var) {
                 // runtime error
@@ -128,5 +147,9 @@ class ProgramExecutor
         } else {
             throw new ProgramExecutionException(1);
         }
+    }
+
+    private static function generateContainerName(): string {
+        return substr(str_shuffle('abcdefghijklmnopqrstuvwxyz'), 0, 8);
     }
 }

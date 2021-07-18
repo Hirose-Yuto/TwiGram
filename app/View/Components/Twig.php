@@ -42,7 +42,7 @@ class Twig extends Component
         $this->twig_how_long_ago = $this->getTwigHowLongAgo($twig->created_at);
         $this->is_retwig = $twig->is_retwig;
         if($this->is_retwig) {
-            $this->retwig_from = new Twig(TwigController::getTwig($twig->retwig_from));
+            $this->retwig_from = new self(TwigController::getTwig($twig->retwig_from));
             $this->retwig_from_twig = $this->retwig_from->twig;
         }
 
