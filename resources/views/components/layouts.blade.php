@@ -75,7 +75,7 @@
                         </form>
                     </li>
                 @endguest
-                {{$rsidebar??"Right Sidebar"}}
+                {{$rsidebar??""}}
             </div>
         </div>
     </div>

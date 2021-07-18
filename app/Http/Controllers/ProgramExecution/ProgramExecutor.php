@@ -8,6 +8,9 @@ use App\Exceptions\ProgramExecutionException;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
+
 class ProgramExecutor
 {
     /**
@@ -32,13 +35,12 @@ class ProgramExecutor
             if($method == "PlainText") {return ["program_result"=>$text, "execution_time"=>0];}
             // コンテナ作成
             $container_name = self::generateContainerName();
-            exec('/usr/local/bin/docker run -d --privileged --name '.$container_name.' '.config("languages.imageNames")[$langList[$lang_index]].' /sbin/init' , $output, $return_var);
+            exec('/usr/local/bin/docker run --rm -d --privileged --name '.$container_name.' '.config("languages.imageNames")[$langList[$lang_index]].' /sbin/init' , $output, $return_var);
             try {
                 $twig_executionTime = ProgramExecutor::$method($text, $ignoreWarning, $container_name);
             }finally {
-                echo "finally ".$container_name;
                 // コンテナ削除
-                exec('/usr/local/bin/docker stop '.$container_name.' && /usr/local/bin/docker rm '.$container_name." > /dev/null &");
+                exec('(/usr/local/bin/docker stop '.$container_name.' > /dev/null && /usr/local/bin/docker rm '.$container_name.' > /dev/null) &');
             }
 
             return $twig_executionTime;
@@ -94,12 +96,14 @@ class ProgramExecutor
                 "int main(){\n".
                     $text.
                 "\n}";
+        $text = addslashes($text);
 
         $output = [];
-        $return_var = 1;
+        $return_var = -1;
 
         // ファイル書き込み
-        exec('/usr/local/bin/docker exec -it '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && echo -e '.$text.' > Main.cpp"', $output, $return_var);
+        exec('/usr/local/bin/docker exec '.$containerName.' /bin/bash -c "cd '.config("languages.directory")["C++"].' && echo -e \' '.$text.' \' > main.cpp"', $output, $return_var);
+
         if (!$return_var) {
             // 初期化
             unset($output);
@@ -110,8 +114,8 @@ class ProgramExecutor
             //exec("gcc --version", $output, $return_var); // Apple clang version 11.0.3 (clang-1103.0.32.29)Target: x86_64-apple-darwin19.6.0Thread model: posixInstalledDir: /Library/Developer/CommandLineTools/usr/bin
 
             // compile
-            $command = "g++ " . $fileName . " -o ".$folder."Main.out 2>&1";
-            exec('/usr/local/bin/docker exec -it '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && '.$command.'"', $output, $return_var);
+            $command = "g++ main.cpp -o Main.out 2>&1";
+            exec('/usr/local/bin/docker exec '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && '.$command.'"', $output, $return_var);
 
             if(!$ignoreWarning && $output) {
                 // warning
@@ -126,8 +130,8 @@ class ProgramExecutor
             unset($output);
 
             // run
-            $command = $folder."Main.out 1>&1";
-            exec('/usr/local/bin/docker exec -it '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && '.$command.'"', $output, $return_var);
+            $command = "./Main.out 1>&1";
+            exec('/usr/local/bin/docker exec '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && '.$command.'"', $output, $return_var);
 
             if($return_var) {
                 // runtime error
