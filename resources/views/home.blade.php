@@ -36,8 +36,6 @@
                 <button type="submit" class="submitTwig" id="submitTwig">Twig</button>
             </form>
         </div>
-
-        <h3>{!! nl2br(e($twig??"")) !!}</h3>
         @foreach($twigs as $twig)
             <x-twig :twig="$twig" />
         @endforeach
