@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>{{$title}} / TwiGram</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{asset('css/home.css')}}" rel="stylesheet">
@@ -16,7 +17,6 @@
     {{$header??""}}
 </head>
 <body>
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-2" id="menu">
@@ -75,7 +75,15 @@
                             </form>
                         </li>
                     @endguest
-                    {{$rsidebar??""}}
+
+                    <div class="input-group">
+                        <form action="/search" method="post">
+                            @csrf
+                            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                                   aria-describedby="search-addon" name="search" value="{{$search??""}}"/>
+                            <button type="submit" class="btn btn-outline-primary">search</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

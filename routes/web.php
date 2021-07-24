@@ -28,6 +28,9 @@ Route::get('/twigs',function(){
 // Home画面
 Route::get('/', "App\Http\Controllers\HomeController@timeline")->middleware("auth");
 
+// 検索
+Route::post('/search/{mode?}', "App\Http\Controllers\SearchController@search")->middleware("auth");
+
 // Twig
 Route::post('/', "App\Http\Controllers\HomeController@twig")->middleware("auth");
 // Reply

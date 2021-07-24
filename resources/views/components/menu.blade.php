@@ -5,7 +5,7 @@
         $user = Auth::user();
             $menuList = [
                 "Home" => "",
-                "Profile" => Auth::check()?\App\Models\User::find(Auth::id())->value("screen_name"):"amida",
+                "Profile" => Auth::check()?\App\Models\User::find(Auth::id())->value("screen_name"):"Amida_CP",
                 "Settings" => "settings"];
         ?>
 
