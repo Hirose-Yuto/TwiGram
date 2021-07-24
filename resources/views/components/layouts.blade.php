@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/layouts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/menu.css') }}">
     <link rel="stylesheet" href="{{ asset('css/twig.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>

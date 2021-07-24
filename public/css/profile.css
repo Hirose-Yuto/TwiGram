@@ -52,7 +52,10 @@
 }
 
 .user_ff_mode{
-
+    padding: 10px;
+    border-bottom-color: #203864;
+    border-bottom-style: solid;
+    border-bottom-width: thin;
 }
 
 

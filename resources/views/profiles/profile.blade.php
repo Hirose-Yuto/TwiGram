@@ -66,25 +66,12 @@
         @if($mode == "following")
             <a id="profile_back_button" href={{"/".$user->screen_name}}>戻る<a/>
             @foreach($followed_users as $followed_user)
-                <div class="user_ff_mode">
-                    <a href={{"/".$followed_user->screen_name}}>
-                        {{$followed_user->user_name}}<br>
-                        {{"@".$followed_user->screen_name}}<br>
-                    </a>
-                    {{$followed_user->bio}}
-                </div>
-
+                <x-user :user="$followed_user" />
             @endforeach
         @elseif($mode === "followers")
             <a id="profile_back_button" href={{"/".$user->screen_name}}>戻る<a/>
             @foreach($following_users as $following_user)
-                <div class="user_ff_mode">
-                    <a href={{"/".$following_user->screen_name}}>
-                        {{$following_user->user_name}}<br>
-                        {{"@".$following_user->screen_name}}<br>
-                    </a>
-                    {{$following_user->bio}}
-                </div>
+                <x-user :user="$following_user" />
             @endforeach
         @else
             <ul class="nav nav-tabs nav-fill">

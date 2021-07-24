@@ -36,6 +36,7 @@
             @endforeach
         @elseif($mode == "user")
             @foreach($users as $user)
+                <x-user :user="$user" />
             @endforeach
         @endif
     </x-slot>
