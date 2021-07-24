@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Home画面
-// Route::get('/test/{twig_id}', "App\Http\Controllers\TwigController@whotwig");
-
 // login, register, logout予約済み
 Auth::routes();
 
@@ -56,11 +53,6 @@ Route::post('/edit-profile', "App\Http\Controllers\ProfileController@editProfile
 Route::post('/follow', "App\Http\Controllers\FollowFollowedRelationshipController@follow")->middleware("auth");
 // Unfollow
 Route::post('/un-follow', "App\Http\Controllers\FollowFollowedRelationshipController@unFollow")->middleware("auth");
-
-Route::get('/hello',function(){
-    return '<html><body><h1>hello world</h1></body></html>';
-})->middleware("test");
-
 
 // プロフィール画面
 Route::get('/{screen_name}', "App\Http\Controllers\ProfileController@main");
