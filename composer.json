@@ -14,7 +14,8 @@
         "laravel/scout": "^9.2",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
-        "symfony/process": "^5.3"
+        "symfony/process": "^5.3",
+      "ext-pthreads": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

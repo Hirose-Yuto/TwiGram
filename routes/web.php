@@ -30,6 +30,13 @@ Route::get('/', "App\Http\Controllers\HomeController@timeline")->middleware("aut
 
 // Twig
 Route::post('/', "App\Http\Controllers\HomeController@twig")->middleware("auth");
+// Reply
+Route::post("/twig/reply", "App\Http\Controllers\TwigController@reply")->middleware("auth");
+// Retwig
+Route::post("/twig/retwig", "App\Http\Controllers\TwigController@retwig")->middleware("auth");
+// Like
+Route::post("/twig/like", "App\Http\Controllers\UsersLikesController@like")->middleware("auth");
+
 // Delete Twig
 Route::post('/twig/delete', "App\Http\Controllers\TwigController@deleteTwig")->middleware("auth");
 // Twig表示
@@ -46,13 +53,6 @@ Route::post('/edit-profile', "App\Http\Controllers\ProfileController@editProfile
 Route::post('/follow', "App\Http\Controllers\FollowFollowedRelationshipController@follow")->middleware("auth");
 // Unfollow
 Route::post('/un-follow', "App\Http\Controllers\FollowFollowedRelationshipController@unFollow")->middleware("auth");
-
-// Reply
-Route::post("/twig/reply", "App\Http\Controllers\TwigController@reply")->middleware("auth");
-// Retwig
-Route::post("/twig/retwig", "App\Http\Controllers\TwigController@retwig")->middleware("auth");
-// Like
-Route::post("/twig/like", "App\Http\Controllers\UsersLikesController@like")->middleware("auth");
 
 Route::get('/hello',function(){
     return '<html><body><h1>hello world</h1></body></html>';

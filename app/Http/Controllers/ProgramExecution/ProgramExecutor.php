@@ -40,7 +40,7 @@ class ProgramExecutor
                 $twig_executionTime = ProgramExecutor::$method($text, $ignoreWarning, $container_name);
             }finally {
                 // コンテナ削除
-                exec('(/usr/local/bin/docker stop '.$container_name.' > /dev/null && /usr/local/bin/docker rm '.$container_name.' > /dev/null) &');
+                exec('(/usr/local/bin/docker stop '.$container_name.' && /usr/local/bin/docker rm '.$container_name.') > /dev/null &');
             }
 
             return $twig_executionTime;
@@ -100,22 +100,21 @@ class ProgramExecutor
 
         $output = [];
         $return_var = -1;
+        $docker = "/usr/local/bin/docker";
 
         // ファイル書き込み
-        exec('/usr/local/bin/docker exec '.$containerName.' /bin/bash -c "cd '.config("languages.directory")["C++"].' && echo -e \' '.$text.' \' > main.cpp"', $output, $return_var);
+        exec($docker.' exec '.$containerName.' /bin/bash -c "cd '.config("languages.directory")["C++"].' && echo -e \' '.$text.' \' > main.cpp"', $output, $return_var);
 
         if (!$return_var) {
             // 初期化
             unset($output);
 
-            $executionTime = 0;
-
             //exec("g++ --version", $output, $return_var); //g++ (Homebrew GCC 10.2.0_4) 10.2.0Copyright (C) 2020 Free Software Foundation, Inc.This is free software; see the source for copying conditions. There is NOwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
             //exec("gcc --version", $output, $return_var); // Apple clang version 11.0.3 (clang-1103.0.32.29)Target: x86_64-apple-darwin19.6.0Thread model: posixInstalledDir: /Library/Developer/CommandLineTools/usr/bin
 
             // compile
-            $command = "g++ main.cpp -o Main.out 2>&1";
-            exec('/usr/local/bin/docker exec '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && '.$command.'"', $output, $return_var);
+            $command = "g++ main.cpp -std=c++11 -o Main.out 2>&1";
+            exec($docker.' exec '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && '.$command.'"', $output, $return_var);
 
             if(!$ignoreWarning && $output) {
                 // warning
@@ -129,9 +128,13 @@ class ProgramExecutor
             // 初期化
             unset($output);
 
+            $start = microtime(true);
+
             // run
             $command = "./Main.out 1>&1";
-            exec('/usr/local/bin/docker exec '.$containerName.' /bin/bash -c " cd '.config("languages.directory")["C++"].' && '.$command.'"', $output, $return_var);
+            exec($docker.' exec ' . $containerName . ' /bin/bash -c " cd ' . config("languages.directory")["C++"] . ' && ' . $command . '"', $output, $return_var);
+
+            $executionTime = microtime(true) - $start;
 
             if($return_var) {
                 // runtime error

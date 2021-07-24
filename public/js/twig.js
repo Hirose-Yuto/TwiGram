@@ -30,7 +30,7 @@ $(function () {
             `
             $(document).on('click', '#twig_delete_'+twig_id, function (){
                 if(confirm("Are you sure to delete this twig?")) {
-                    $.post("/twig/delete/", {
+                    $.post("/twig/delete", {
                         twig_id:twig_id,
                         _token : $('meta[name="csrf-token"]').attr('content')
                     }, function () {
@@ -87,11 +87,11 @@ function retwigBox(twig_id) {
     }
 }
 
-function like(twig_id, token) {
-    $.post("/twig/like/",
+function like(twig_id) {
+    $.post("/twig/like",
         {
             twig_id : twig_id,
-            _token : token,
+            _token : $('meta[name="csrf-token"]').attr('content'),
         },
         function (data, textStatus, jqXHR) {
             let like_element = document.getElementById("twig_like_text_" + twig_id);
@@ -105,7 +105,6 @@ function like(twig_id, token) {
                 like_num.style.color = "black"
                 like_num.innerText = String(parseInt(like_num.innerText, 10) - 1);
             }
-            // 見た目上1増やす or 減らす
-
-        })
+        }
+    )
 }

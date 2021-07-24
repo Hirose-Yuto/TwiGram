@@ -204,38 +204,38 @@ class TwigController extends Controller
 
     /**
      * ツイッグが存在するか
-     * @param int $twig_id
+     * @param  $twig_id
      * @return bool
      */
-    public static function exists(int $twig_id): bool {
+    public static function exists( $twig_id): bool {
         return Twig::query()->find($twig_id)->exists();
     }
 
     /**
      * ツイッグが存在しない
-     * @param int $twig_id
+     * @param  $twig_id
      * @return bool
      */
-    public static function doesntExists(int $twig_id): bool {
+    public static function doesntExists( $twig_id): bool {
         return Twig::query()->find($twig_id)->doesntExist();
     }
 
     /**
      * 誰がtwigしたのか
-     * @param int $twig_id
-     * @return int twigging user id
+     * @param  $twig_id
+     * @return \Illuminate\Database\Eloquent\HigherOrderBuilderProxy|\Illuminate\Support\HigherOrderCollectionProxy|mixed
      */
-    public static function whoTwig(int $twig_id): int {
+    public static function whoTwig( $twig_id) {
         return Twig::query()->find($twig_id)->twig_from;
     }
 
     /**
      * ユーザがリツイッグしたかどうか
-     * @param int $twig_id
-     * @param int $user_id
+     * @param  $twig_id
+     * @param  $user_id
      * @return bool
      */
-    public static function is_retwigBy(int $twig_id, int $user_id): bool {
+    public static function is_retwigBy( $twig_id,  $user_id): bool {
         return Twig::query()
             ->where("twig_from", "=", $user_id)
             ->where("is_retwig", "=", true)
@@ -245,10 +245,10 @@ class TwigController extends Controller
 
     /**
      * ツイッグを取得。
-     * @param int $twig_id
+     * @param $twig_id
      * @return \Illuminate\Database\Eloquent\Builder|mixed
      */
-    public static function getTwig(int $twig_id) {
+    public static function getTwig($twig_id) {
         if(self::exists($twig_id)) {
             return Twig::query()->find($twig_id);
         }
@@ -257,11 +257,11 @@ class TwigController extends Controller
 
     /**
      * ユーザのツイッグを取得(リプライは含めない)。
-     * @param int $user_id
-     * @param int $num_of_twigs_to_get
+     * @param  $user_id
+     * @param  $num_of_twigs_to_get
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function getTwigsWithoutReplies(int $user_id, int $num_of_twigs_to_get = 15) {
+    public static function getTwigsWithoutReplies( $user_id,  $num_of_twigs_to_get = 15) {
         return Twig::query()->where("twig_from", $user_id)
             ->where("reply_for", "=", null)
             ->orderByDesc("updated_at")
@@ -271,11 +271,11 @@ class TwigController extends Controller
 
     /**
      * ユーザのツイッグを取得(リプライも含める)。
-     * @param int $user_id
-     * @param int $num_of_twigs_to_get
+     * @param  $user_id
+     * @param  $num_of_twigs_to_get
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function getTwigsIncludingReplies(int $user_id, int $num_of_twigs_to_get = 15) {
+    public static function getTwigsIncludingReplies( $user_id,  $num_of_twigs_to_get = 15) {
         return Twig::query()
             ->where("twig_from", $user_id)
             ->orderByDesc("updated_at")
@@ -285,11 +285,11 @@ class TwigController extends Controller
 
     /**
      * ユーザがフォローしている人+自分自身のツイッグを取得する。(返信は含まない)
-     * @param int $user_id
-     * @param int $num_of_twigs_to_get
+     * @param  $user_id
+     * @param  $num_of_twigs_to_get
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function getFollowingUserTwigs(int $user_id, int $num_of_twigs_to_get = 15) {
+    public static function getFollowingUserTwigs( $user_id,  $num_of_twigs_to_get = 15) {
         // 返信含まない
         $twigs = Twig::query()->where("reply_for", "=", null)
             ->where(function ($query) use ($user_id){
@@ -309,10 +309,10 @@ class TwigController extends Controller
 
     /**
      * ふぁぼ数加算。
-     * @param int $twig_id
-     * @param int $num
+     * @param  $twig_id
+     * @param  $num
      */
-    public static function addNumOfLikes(int $twig_id, int $num = 1) {
+    public static function addNumOfLikes( $twig_id,  $num = 1) {
         if(self::doesntExists($twig_id)) {
             // ToDo:例外処理
         }
@@ -325,10 +325,10 @@ class TwigController extends Controller
 
     /**
      * リツイッグ数加算。
-     * @param int $twig_id
-     * @param int $num
+     * @param  $twig_id
+     * @param  $num
      */
-    public static function addNumOfRetwigs(int $twig_id, int $num = 1) {
+    public static function addNumOfRetwigs( $twig_id,  $num = 1) {
         if(self::doesntExists($twig_id)) {
             // ToDo:例外処理
         }
@@ -341,10 +341,10 @@ class TwigController extends Controller
 
     /**
      * 引用リツイッグ数加算。
-     * @param int $twig_id
-     * @param int $num
+     * @param  $twig_id
+     * @param  $num
      */
-    public static function addNumOfRetwigsWithComment(int $twig_id, int $num = 1) {
+    public static function addNumOfRetwigsWithComment( $twig_id,  $num = 1) {
         if(self::doesntExists($twig_id)) {
             // ToDo:例外処理
         }
