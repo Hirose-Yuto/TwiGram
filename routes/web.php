@@ -20,13 +20,13 @@ use Illuminate\Support\Facades\Route;
 // login, register, logout予約済み
 Auth::routes();
 
-Route::get('/twigs',function(){
-    $twigs = \App\Models\Twig::search('な')->get();
-    echo $twigs;
-});
-
 // Home画面
 Route::get('/', "App\Http\Controllers\HomeController@timeline")->middleware("auth");
+
+//ユーザ一覧
+Route::get("/users", function (){
+    return view("users", ["users" => \App\Models\User::query()->get()]);}
+)->middleware("auth");
 
 // 検索
 Route::post('/search/{mode?}', "App\Http\Controllers\SearchController@search")->middleware("auth");
