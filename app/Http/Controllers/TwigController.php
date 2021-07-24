@@ -6,6 +6,7 @@ use App\Exceptions\ProgramExecutionException;
 use App\Http\Controllers\ProgramExecution\ProgramExecutor;
 use Illuminate\Http\Request;
 use App\Models\Twig;
+use App\View\Components\Twig as T;
 use Illuminate\Support\Facades\Auth;
 
 class TwigController extends Controller
@@ -14,6 +15,7 @@ class TwigController extends Controller
      * ツイッグページの表示
      * @param $twig_id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @throws \Exception
      */
     public function display($twig_id) {
         $twig = self::getTwig($twig_id);
@@ -24,7 +26,7 @@ class TwigController extends Controller
         $retwig_from = -1;
         $retwig_from_twig = -1;
         if($is_retwig) {
-            $retwig_from = new Twig(TwigController::getTwig($twig->retwig_from));
+            $retwig_from = new T(TwigController::getTwig($twig->retwig_from));
             $retwig_from_twig = $retwig_from->twig;
         }
 

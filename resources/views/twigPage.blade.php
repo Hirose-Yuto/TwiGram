@@ -9,8 +9,17 @@
             <div style="margin: 38px 15px 15px;">
                 <span style="font-size: larger">{{$user->user_name}}</span><br>
                 <span style="color: darkgray">{{"@".$user->screen_name}}</span>
-
-                <p style="font-size: x-large">{!! nl2br(e($twig->program_result)) !!}</p><br>
+                <p style="font-size: x-large">{!! nl2br(e($twig->program_result)) !!}</p>
+                @if($is_retwig)
+                    <div class="retwig_from" onclick="jump('{{$retwig_from->twig_url}}')">
+                        <span>{{$retwig_from->twig_from->user_name}}</span>
+                        <span style="color: darkgray">{{"@".$retwig_from->twig_from->screen_name}}</span>
+                        <span style="color: darkgray">{{$retwig_from->twig_how_long_ago}}</span> <br>
+                        <div style="padding-left: 5px">
+                            {!! nl2br(e($retwig_from->twig->program_result)) !!}
+                        </div>
+                    </div>
+                @endif
             </div>
             @if($user->user_id == \Illuminate\Support\Facades\Auth::id())
                 <object onclick="doNothing(arguments[0])">
