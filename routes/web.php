@@ -24,35 +24,36 @@ Route::get('/twigs',function(){
     $twigs = \App\Models\Twig::search('な')->get();
     echo $twigs;
 });
-
-// Home画面
-Route::get('/', "App\Http\Controllers\HomeController@timeline")->middleware("auth");
+Route::middleware('auth')->group(function (){
+    // Home画面
+    Route::get('/', "App\Http\Controllers\HomeController@timeline")->name('home');
 
 // Twig
-Route::post('/', "App\Http\Controllers\HomeController@twig")->middleware("auth");
+    Route::post('/', "App\Http\Controllers\HomeController@twig");
 // Reply
-Route::post("/twig/reply", "App\Http\Controllers\TwigController@reply")->middleware("auth");
+    Route::post("/twig/reply", "App\Http\Controllers\TwigController@reply");
 // Retwig
-Route::post("/twig/retwig", "App\Http\Controllers\TwigController@retwig")->middleware("auth");
+    Route::post("/twig/retwig", "App\Http\Controllers\TwigController@retwig");
 // Like
-Route::post("/twig/like", "App\Http\Controllers\UsersLikesController@like")->middleware("auth");
+    Route::post("/twig/like", "App\Http\Controllers\UsersLikesController@like");
 
 // Delete Twig
-Route::post('/twig/delete', "App\Http\Controllers\TwigController@deleteTwig")->middleware("auth");
+    Route::post('/twig/delete', "App\Http\Controllers\TwigController@deleteTwig");
 // Twig表示
-Route::get('/twig/{twig_id}', "App\Http\Controllers\TwigController@display")->middleware("auth");
+    Route::get('/twig/{twig_id}', "App\Http\Controllers\TwigController@display");
 
 // Settings
-Route::get('/settings', "App\Http\Controllers\SettingsController@settings")->middleware("auth");
+    Route::get('/settings', "App\Http\Controllers\SettingsController@settings")->name('settings');
 
 //Edit Profile
-Route::get('/edit-profile', "App\Http\Controllers\ProfileController@editProfilePage")->middleware("auth");
-Route::post('/edit-profile', "App\Http\Controllers\ProfileController@editProfile")->middleware("auth");
+    Route::get('/edit-profile', "App\Http\Controllers\ProfileController@editProfilePage");
+    Route::post('/edit-profile', "App\Http\Controllers\ProfileController@editProfile");
 
 // Follow
-Route::post('/follow', "App\Http\Controllers\FollowFollowedRelationshipController@follow")->middleware("auth");
+    Route::post('/follow', "App\Http\Controllers\FollowFollowedRelationshipController@follow");
 // Unfollow
-Route::post('/un-follow', "App\Http\Controllers\FollowFollowedRelationshipController@unFollow")->middleware("auth");
+    Route::post('/un-follow', "App\Http\Controllers\FollowFollowedRelationshipController@unFollow");
+});
 
 Route::get('/hello',function(){
     return '<html><body><h1>hello world</h1></body></html>';
@@ -60,7 +61,7 @@ Route::get('/hello',function(){
 
 
 // プロフィール画面
-Route::get('/{screen_name}', "App\Http\Controllers\ProfileController@main");
+Route::get('/{screen_name}', "App\Http\Controllers\ProfileController@main")->name('profile');
 Route::get('/{screen_name}/{mode}', "App\Http\Controllers\ProfileController@main");
 
 
