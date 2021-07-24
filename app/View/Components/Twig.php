@@ -29,6 +29,8 @@ class Twig extends Component
     public $is_userRetwig;
     public $is_userLike;
 
+
+
     /**
      * Create a new component instance.
      *
@@ -42,8 +44,12 @@ class Twig extends Component
         $this->twig_how_long_ago = $this->getTwigHowLongAgo($twig->created_at);
         $this->is_retwig = $twig->is_retwig;
         if($this->is_retwig) {
-            $this->retwig_from = new self(TwigController::getTwig($twig->retwig_from));
-            $this->retwig_from_twig = $this->retwig_from->twig;
+            $tmp = TwigController::getTwig($twig->retwig_from);
+            if($tmp != null) {
+                $this->retwig_from = new self($tmp);
+                $this->retwig_from_twig = $this->retwig_from->twig;
+            }
+
         }
 
         $this->twig_url = "/twig/".$twig->twig_id;

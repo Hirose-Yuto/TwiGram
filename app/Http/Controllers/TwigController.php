@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Twig;
 use App\View\Components\Twig as T;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TwigController extends Controller
 {
@@ -21,29 +22,41 @@ class TwigController extends Controller
         $twig = self::getTwig($twig_id);
         $user = UserController::getUser($twig->twig_from);
 
-        $twig_from = UserController::getUser($twig->twig_from);
-        $is_retwig = $twig->is_retwig;
-        $retwig_from = -1;
-        $retwig_from_twig = -1;
-        if($is_retwig) {
-            $retwig_from = new T(TwigController::getTwig($twig->retwig_from));
-            $retwig_from_twig = $retwig_from->twig;
-        }
-
         $is_userRetwig = TwigController::is_retwigBy($twig_id, Auth::id());
         $is_userLike = UsersLikesController::is_userLikedTwig(Auth::id(), $twig_id);
+
+        $twig_from = UserController::getUser($twig->twig_from);
+        $is_retwig = $twig->is_retwig;
+        if($is_retwig) {
+            $tmp = TwigController::getTwig($twig->retwig_from);
+            if($tmp != null) {
+                $retwig_from = new T($tmp);
+                $retwig_from_twig = $retwig_from->twig;
+
+                $data = [
+                    "twig" => $twig,
+                    "user" => $user,
+                    "is_retwig" => $is_retwig,
+                    "retwig_from" => $retwig_from,
+                    "retwig_from_twig" => $retwig_from_twig,
+                    "is_userRetwig" => $is_userRetwig,
+                    "is_userLike" => $is_userLike,
+                    "replies" => self::getReplies($twig_id)
+                ];
+                return view("twigPage", $data);
+            }
+        }
 
         $data = [
             "twig" => $twig,
             "user" => $user,
             "is_retwig" => $is_retwig,
-            "retwig_from" => $retwig_from,
-            "retwig_from_twig" => $retwig_from_twig,
             "is_userRetwig" => $is_userRetwig,
             "is_userLike" => $is_userLike,
             "replies" => self::getReplies($twig_id)
         ];
         return view("twigPage", $data);
+
     }
 
     public function reply(Request $request) {
@@ -223,14 +236,14 @@ class TwigController extends Controller
             // リツイッグされていればnullに
             foreach(Twig::query()
                 ->where("retwig_from", "=", $twig_id)
-                ->get("twig_id") as $twig_id_to_delete) {
-                Twig::query()->find($twig_id_to_delete)->update(["retwig_from" => null]);
+                ->get("twig_id") as $twig_to_delete) {
+                $twig_to_delete->update(["retwig_from" => null]);
             }
             // リプライされていればnullに
             foreach(Twig::query()
                         ->where("reply_for", "=", $twig_id)
-                        ->get("twig_id") as $twig_id_to_delete) {
-                Twig::query()->find($twig_id_to_delete)->update(["reply_for" => null]);
+                        ->get() as $twig_to_delete) {
+                $twig_to_delete->update(["reply_for" => null]);
             }
             // ふぁぼは消す
             UsersLikesController::deleteLikeByData(["twig_id" => $twig_id]);
@@ -259,7 +272,7 @@ class TwigController extends Controller
      * @return bool
      */
     public static function exists( $twig_id): bool {
-        return Twig::query()->find($twig_id)->exists();
+        return Twig::query()->find($twig_id) != null;
     }
 
     /**
@@ -268,7 +281,7 @@ class TwigController extends Controller
      * @return bool
      */
     public static function doesntExists( $twig_id): bool {
-        return Twig::query()->find($twig_id)->doesntExist();
+        return !self::exists($twig_id);
     }
 
     /**
@@ -304,6 +317,7 @@ class TwigController extends Controller
             return Twig::query()->find($twig_id);
         }
         // ToDo: 例外処理
+        return null;
     }
 
     /**

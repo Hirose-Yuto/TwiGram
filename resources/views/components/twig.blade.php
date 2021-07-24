@@ -24,7 +24,7 @@
         <p class="twig_body">{!! nl2br(e($twig->program_result)) !!}</p>
 
     </div>
-    @if($is_retwig)
+    @if($is_retwig && $retwig_from != null)
         <div class="retwig_from" onclick="jump('{{$retwig_from->twig_url}}')">
             <span>{{$retwig_from->twig_from->user_name}}</span>
             <span style="color: darkgray">{{"@".$retwig_from->twig_from->screen_name}}</span>

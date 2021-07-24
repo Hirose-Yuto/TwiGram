@@ -10,7 +10,7 @@
                 <span style="font-size: larger">{{$user->user_name}}</span><br>
                 <span style="color: darkgray">{{"@".$user->screen_name}}</span>
                 <p style="font-size: x-large">{!! nl2br(e($twig->program_result)) !!}</p>
-                @if($is_retwig)
+                @if($is_retwig && isset($retwig_from))
                     <div class="retwig_from" onclick="jump('{{$retwig_from->twig_url}}')">
                         <span>{{$retwig_from->twig_from->user_name}}</span>
                         <span style="color: darkgray">{{"@".$retwig_from->twig_from->screen_name}}</span>
