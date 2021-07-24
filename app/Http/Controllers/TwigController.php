@@ -39,8 +39,57 @@ class TwigController extends Controller
             "retwig_from_twig" => $retwig_from_twig,
             "is_userRetwig" => $is_userRetwig,
             "is_userLike" => $is_userLike,
+            "replies" => self::getReplies($twig_id)
         ];
         return view("twigPage", $data);
+    }
+
+    public function reply(Request $request) {
+        $reply = $request->get("reply");
+        $lang_index = $request->get("lang");
+        $reply_from = $request->get("reply_from");
+        if($request->get("ignore_warning")) {
+            $ignoreWarning = true;
+        } else {
+            $ignoreWarning = false;
+        }
+
+        try {
+            // 実行結果&実行時間取得
+            $program_result = ProgramExecutor::executeProgram($reply, $lang_index, $ignoreWarning);
+        }catch(ProgramExecutionException $e) {
+            // 記録
+            $e->report();
+
+            // 表示するエラーメッセージ
+            $data = [
+                "exceptionMessage" => $e->exceptionMessage,
+                "customMessage" => $e->customMessage,
+                "twig_draft" => $reply,
+            ];
+
+            //ToDo:Reply入力画面に戻す
+            return view("home", $data);
+        }
+
+        // twigをDBに登録
+        $data = [
+            "program" => $reply,
+            "program_result" => $program_result["program_result"],
+            "program_language_id" => $lang_index,
+            "execution_time" => $program_result["execution_time"],
+            "num_of_likes" => 0,
+            "num_of_retwigs" => 0,
+            "num_of_retwigs_with_comment" => 0,
+            "twig_from" => Auth::id(),
+            "reply_for" => $reply_from,
+            "is_retwig" => false,
+            "retwig_comment" => null,
+            "retwig_from" => null,
+        ];
+        Twig::query()->create($data);
+
+        return redirect('/', 302, [], env("IS_SECURE"));
     }
 
     /**
@@ -305,6 +354,15 @@ class TwigController extends Controller
         return $twigs->orderByDesc("created_at")
                      ->take($num_of_twigs_to_get)
                      ->get();
+    }
+
+    /**
+     * リプライを取得
+     * @param $twig_id
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public static function getReplies($twig_id) {
+        return Twig::query()->where("reply_for", "=", $twig_id)->get();
     }
 
     /**
