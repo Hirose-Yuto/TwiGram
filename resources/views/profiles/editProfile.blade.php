@@ -7,10 +7,10 @@
     <x-slot name="body">
         <form action="/edit-profile" method="post">
             @csrf
-            <label for=bio">
-                <textarea name="bio" id="bio" class="bio" placeholder="{{$bio??"bioを入力してください"}}" cols="42" rows="3" >{{$bio??"bioを入力してください"}}</textarea>
+            <label for=bio" class="w-100">
+                <textarea name="bio" id="bio" class="form-control" placeholder="{{$bio??"bioを入力してください"}}" cols="42" rows="3" >{{$bio??"bioを入力してください"}}</textarea>
             </label><br>
-            <button type="submit" class="submitTwig">Update</button>
+            <button type="submit" class="btn btn-primary" style="color: white;">Update</button>
         </form>
     </x-slot>
 </x-layouts>

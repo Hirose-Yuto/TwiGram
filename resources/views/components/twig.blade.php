@@ -77,8 +77,8 @@
     <div id="retwig_input_{{$twig_id}}" style="display: none">
         <form action="/twig/retwig" method="post">
             @csrf
-            <label for=comment">
-                <textarea name="comment" id="comment_{{$twig_id}}" class="comment" placeholder="retwig comment" cols="42" rows="3"></textarea>
+            <label for=comment" class="w-100">
+                <textarea name="comment" id="comment_{{$twig_id}}" class="form-control" placeholder="retwig comment" cols="42" rows="3"></textarea>
             </label><br>
 
             <label for="lang">
@@ -103,15 +103,15 @@
                 </label>
             </div>
             <input type="hidden" name="retwig_from" value="{{$twig_id}}">
-            <button type="submit" class="submitRetwig" id="submitRetwig_{{$twig_id}}">Retwig</button>
+            <button type="submit" class="btn btn-primary" style="color: white;">Retwig</button>
         </form>
     </div>
 
     <div id="reply_input_{{$twig_id}}" style="display: none">
         <form action="/twig/reply" method="post">
             @csrf
-            <label for=reply">
-                <textarea name="reply" id="reply_{{$twig_id}}" class="reply" placeholder="reply" cols="42" rows="3"></textarea>
+            <label for="reply" class="w-100">
+                <textarea name="reply" id="reply_{{$twig_id}}" class="form-control" placeholder="reply" cols="42" rows="3"></textarea>
             </label><br>
 
             <label for="lang">
@@ -136,7 +136,7 @@
                 </label>
             </div>
             <input type="hidden" name="reply_from" value="{{$twig_id}}">
-            <button type="submit" class="submitReply" id="submitReply_{{$twig_id}}">Reply</button>
+            <button type="submit" class="btn btn-primary" style="color: white;">Reply</button>
         </form>
     </div>
 
