@@ -81,7 +81,7 @@
                 @endguest
 
                 <div class="input-group">
-                    <form action="/search" method="post">
+                    <form action="/search" method="get">
                         @csrf
                         <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                                aria-describedby="search-addon" name="search" value="{{$search??""}}"/>

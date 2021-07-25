@@ -7,23 +7,23 @@
     <x-slot name="body">
         <ul class="nav nav-tabs nav-fill">
                 @if($mode == "twig")
-                    <form action="/search/twig" method="post">
+                    <form action="/search/twig" method="get">
                         @csrf
                         <input type="hidden" name="search" value="{{$search}}">
                         <button class="nav-link active" aria-current="page" type="submit">Twig</button>
                     </form>
-                    <form action="/search/user" method="post">
+                    <form action="/search/user" method="get">
                         @csrf
                         <input type="hidden" name="search" value="{{$search}}">
                         <button class="nav-link" type="submit">User</button>
                     </form>
                 @elseif($mode == "user")
-                    <form action="/search/twig" method="post">
+                    <form action="/search/twig" method="get">
                         @csrf
                         <input type="hidden" name="search" value="{{$search}}">
                         <button class="nav-link" type="submit">Twig</button>
                     </form>
-                    <form action="/search/user" method="post">
+                    <form action="/search/user" method="get">
                         @csrf
                         <input type="hidden" name="search" value="{{$search}}">
                         <button class="nav-link active" aria-current="page" type="submit">User</button>

@@ -27,7 +27,7 @@ Route::middleware("auth")->group(function () {
     );
 
     // 検索
-    Route::post('/search/{mode?}', "App\Http\Controllers\SearchController@search");
+    Route::get('/search/{mode?}', "App\Http\Controllers\SearchController@search");
 
     // Twig
     Route::post('/', "App\Http\Controllers\HomeController@twig");
