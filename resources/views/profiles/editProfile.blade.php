@@ -8,9 +8,7 @@
         <form action="/edit-profile" method="post">
             @csrf
             <label for=bio">
-                <textarea name="bio" id="bio" class="bio" placeholder="bioを入力してください" cols="42" rows="3" >
-                    bioを入力してください
-                </textarea>
+                <textarea name="bio" id="bio" class="bio" placeholder="{{$bio??"bioを入力してください"}}" cols="42" rows="3" >{{$bio??"bioを入力してください"}}</textarea>
             </label><br>
             <button type="submit" class="submitTwig">Update</button>
         </form>

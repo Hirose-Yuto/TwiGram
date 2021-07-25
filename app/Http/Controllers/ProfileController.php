@@ -91,7 +91,8 @@ class ProfileController extends Controller
     }
 
     public function editProfilePage() {
-        return view("profiles.editProfile");
+        $bio = User::query()->find(Auth::id())->value("bio");
+        return view("profiles.editProfile", ["bio" => $bio]);
     }
 
     public function editProfile(Request $request) {
