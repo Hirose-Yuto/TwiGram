@@ -24,7 +24,13 @@
 }
 
 #body {
-    margin-top: 22px;
+    border-right-color: #203864;
+    border-right-style: solid;
+    border-right-width: thin;
+    border-left-color: #203864;
+    border-left-style: solid;
+    border-left-width: thin;
+    padding-top: 22px;
 }
 
 #exception {
